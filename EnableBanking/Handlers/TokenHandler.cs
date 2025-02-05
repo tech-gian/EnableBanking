@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -13,9 +14,9 @@ namespace EnableBanking.Handlers
 
         private readonly TokenHandlerOptions _options;
 
-        public TokenHandler(TokenHandlerOptions options)
+        public TokenHandler(IOptions<TokenHandlerOptions> options)
         {
-            _options = options;
+            _options = options.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

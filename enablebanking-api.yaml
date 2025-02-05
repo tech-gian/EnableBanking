@@ -1,0 +1,4179 @@
+openapi: 3.1.0
+info:
+  title: API reference
+  version: 1.0.0-33d10df1
+paths:
+  /auth:
+    post:
+      tags:
+      - User sessions
+      summary: Start user authorization
+      description: Start authorization by getting a redirect link and redirecting
+        a PSU to that link
+      operationId: initialize_session_auth_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartAuthorizationRequest'
+              description: Provide desired PSU consent parameters
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartAuthorizationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '408':
+          description: Request Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions:
+    post:
+      tags:
+      - User sessions
+      summary: Authorize user session
+      description: Authorize user session by provided authorization code
+      operationId: authorize_session_sessions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeSessionRequest'
+              description: Contains data necessary for authorizing session
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizeSessionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '408':
+          description: Request Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{session_id}:
+    get:
+      tags:
+      - User sessions
+      summary: Get session data
+      description: Get session data by session ID
+      operationId: get_session_sessions__session_id__get
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Previously authorized session ID
+          title: Session Id
+        description: Previously authorized session ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSessionResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+    delete:
+      tags:
+      - User sessions
+      summary: Delete session
+      description: Delete session by session ID. PSU's bank consent will be closed
+        automatically if possible
+      operationId: delete_session_sessions__session_id__delete
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Previously authorized session ID
+          title: Session Id
+        description: Previously authorized session ID
+      - name: Psu-Ip-Address
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU IP address
+          title: Psu-Ip-Address
+        description: PSU IP address
+      - name: Psu-User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU browser User Agent
+          title: Psu-User-Agent
+        description: PSU browser User Agent
+      - name: Psu-Referer
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU Referer
+          title: Psu-Referer
+        description: PSU Referer
+      - name: Psu-Accept
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept header
+          title: Psu-Accept
+        description: PSU accept header
+      - name: Psu-Accept-Charset
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU charset
+          title: Psu-Accept-Charset
+        description: PSU charset
+      - name: Psu-Accept-Encoding
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept encoding
+          title: Psu-Accept-Encoding
+        description: PSU accept encoding
+      - name: Psu-Accept-language
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept language
+          title: Psu-Accept-Language
+        description: PSU accept language
+      - name: Psu-Geo-Location
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: -?\d{1,2}\.\d{1,6},-?\d{1,3}\.\d{1,6}
+          description: Comma separated latitude and longitude coordinates without
+            spaces
+          examples:
+          - -1.2345,6.789
+          title: Psu-Geo-Location
+        description: Comma separated latitude and longitude coordinates without spaces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /accounts/{account_id}/details:
+    get:
+      tags:
+      - Accounts data
+      summary: Get account details
+      description: Fetching account details from ASPSP for an account by its ID
+      operationId: get_account_accounts__account_id__details_get
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Account ID
+          title: Account Id
+        description: Account ID
+      - name: Psu-Ip-Address
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU IP address
+          title: Psu-Ip-Address
+        description: PSU IP address
+      - name: Psu-User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU browser User Agent
+          title: Psu-User-Agent
+        description: PSU browser User Agent
+      - name: Psu-Referer
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU Referer
+          title: Psu-Referer
+        description: PSU Referer
+      - name: Psu-Accept
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept header
+          title: Psu-Accept
+        description: PSU accept header
+      - name: Psu-Accept-Charset
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU charset
+          title: Psu-Accept-Charset
+        description: PSU charset
+      - name: Psu-Accept-Encoding
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept encoding
+          title: Psu-Accept-Encoding
+        description: PSU accept encoding
+      - name: Psu-Accept-language
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept language
+          title: Psu-Accept-Language
+        description: PSU accept language
+      - name: Psu-Geo-Location
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: -?\d{1,2}\.\d{1,6},-?\d{1,3}\.\d{1,6}
+          description: Comma separated latitude and longitude coordinates without
+            spaces
+          examples:
+          - -1.2345,6.789
+          title: Psu-Geo-Location
+        description: Comma separated latitude and longitude coordinates without spaces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResource'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /accounts/{account_id}/balances:
+    get:
+      tags:
+      - Accounts data
+      summary: Get account balances
+      description: Fetching account balances from ASPSP for an account by its ID
+      operationId: get_account_balances_accounts__account_id__balances_get
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: PSU account ID accessible in the provided session
+          title: Account Id
+        description: PSU account ID accessible in the provided session
+      - name: Psu-Ip-Address
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU IP address
+          title: Psu-Ip-Address
+        description: PSU IP address
+      - name: Psu-User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU browser User Agent
+          title: Psu-User-Agent
+        description: PSU browser User Agent
+      - name: Psu-Referer
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU Referer
+          title: Psu-Referer
+        description: PSU Referer
+      - name: Psu-Accept
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept header
+          title: Psu-Accept
+        description: PSU accept header
+      - name: Psu-Accept-Charset
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU charset
+          title: Psu-Accept-Charset
+        description: PSU charset
+      - name: Psu-Accept-Encoding
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept encoding
+          title: Psu-Accept-Encoding
+        description: PSU accept encoding
+      - name: Psu-Accept-language
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept language
+          title: Psu-Accept-Language
+        description: PSU accept language
+      - name: Psu-Geo-Location
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: -?\d{1,2}\.\d{1,6},-?\d{1,3}\.\d{1,6}
+          description: Comma separated latitude and longitude coordinates without
+            spaces
+          examples:
+          - -1.2345,6.789
+          title: Psu-Geo-Location
+        description: Comma separated latitude and longitude coordinates without spaces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HalBalances'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /accounts/{account_id}/transactions:
+    get:
+      tags:
+      - Accounts data
+      summary: Get account transactions
+      description: Fetching account transactions from ASPSP for an account by its
+        ID
+      operationId: get_account_transactions_accounts__account_id__transactions_get
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: PSU account ID accessible in the provided session
+          title: Account Id
+        description: PSU account ID accessible in the provided session
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Date to fetch transactions from (including the date, UTC timezone
+          is assumed)
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Date to fetch transactions to (including the date, UTC timezone
+          is assumed)
+      - name: continuation_key
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Key, allowing iterate over multiple API pages of transactions
+      - name: transaction_status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TransactionStatus'
+        description: Filter transactions by provided status
+      - name: strategy
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TransactionsFetchStrategy'
+          description: Strategy how transaction are fetched
+          default: default
+        description: Strategy how transaction are fetched
+      - name: Psu-Ip-Address
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU IP address
+          title: Psu-Ip-Address
+        description: PSU IP address
+      - name: Psu-User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU browser User Agent
+          title: Psu-User-Agent
+        description: PSU browser User Agent
+      - name: Psu-Referer
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU Referer
+          title: Psu-Referer
+        description: PSU Referer
+      - name: Psu-Accept
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept header
+          title: Psu-Accept
+        description: PSU accept header
+      - name: Psu-Accept-Charset
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU charset
+          title: Psu-Accept-Charset
+        description: PSU charset
+      - name: Psu-Accept-Encoding
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept encoding
+          title: Psu-Accept-Encoding
+        description: PSU accept encoding
+      - name: Psu-Accept-language
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept language
+          title: Psu-Accept-Language
+        description: PSU accept language
+      - name: Psu-Geo-Location
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: -?\d{1,2}\.\d{1,6},-?\d{1,3}\.\d{1,6}
+          description: Comma separated latitude and longitude coordinates without
+            spaces
+          examples:
+          - -1.2345,6.789
+          title: Psu-Geo-Location
+        description: Comma separated latitude and longitude coordinates without spaces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HalTransactions'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /accounts/{account_id}/transactions/{transaction_id}:
+    get:
+      tags:
+      - Accounts data
+      summary: Get transaction details
+      description: Fetching transaction details from ASPSP for an account transaction
+        by its ID
+      operationId: get_transaction_accounts__account_id__transactions__transaction_id__get
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Account ID
+          title: Account Id
+        description: Account ID
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Transaction ID
+          title: Transaction Id
+        description: Transaction ID
+      - name: Psu-Ip-Address
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU IP address
+          title: Psu-Ip-Address
+        description: PSU IP address
+      - name: Psu-User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU browser User Agent
+          title: Psu-User-Agent
+        description: PSU browser User Agent
+      - name: Psu-Referer
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU Referer
+          title: Psu-Referer
+        description: PSU Referer
+      - name: Psu-Accept
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept header
+          title: Psu-Accept
+        description: PSU accept header
+      - name: Psu-Accept-Charset
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU charset
+          title: Psu-Accept-Charset
+        description: PSU charset
+      - name: Psu-Accept-Encoding
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept encoding
+          title: Psu-Accept-Encoding
+        description: PSU accept encoding
+      - name: Psu-Accept-language
+        in: header
+        required: false
+        schema:
+          type: string
+          description: PSU accept language
+          title: Psu-Accept-Language
+        description: PSU accept language
+      - name: Psu-Geo-Location
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: -?\d{1,2}\.\d{1,6},-?\d{1,3}\.\d{1,6}
+          description: Comma separated latitude and longitude coordinates without
+            spaces
+          examples:
+          - -1.2345,6.789
+          title: Psu-Geo-Location
+        description: Comma separated latitude and longitude coordinates without spaces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /payments:
+    post:
+      tags:
+      - Payments
+      summary: Create payment
+      description: Creating a payment consisting of one or multiple payment transactions
+      operationId: create_payment_payments_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+              description: Contains data necessary for initiating a payment
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePaymentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '408':
+          description: Request Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /payments/{payment_id}:
+    get:
+      tags:
+      - Payments
+      summary: Get payment
+      description: Fetching payment status and details
+      operationId: get_payment_payments__payment_id__get
+      parameters:
+      - name: payment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Payment ID
+          title: Payment Id
+        description: Payment ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPaymentResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /payments/{payment_id}/transactions/{transaction_id}:
+    get:
+      tags:
+      - Payments
+      summary: Get payment transaction
+      description: Fetching transaction details for a single transaction within a
+        bulk payment
+      operationId: get_payment_transaction_payments__payment_id__transactions__transaction_id__get
+      parameters:
+      - name: payment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Payment ID
+          title: Payment Id
+        description: Payment ID
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Transaction ID
+          title: Transaction Id
+        description: Transaction ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPaymentTransactionResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /aspsps:
+    get:
+      tags:
+      - Misc
+      summary: Get list of ASPSPs
+      description: Get list of ASPSPs with their meta information
+      operationId: get_aspsps_aspsps_get
+      parameters:
+      - name: country
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Z]{2}$
+          description: Display only ASPSPs from specified country
+          title: Country
+        description: Display only ASPSPs from specified country
+      - name: psu_type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/PSUType'
+          description: Display only ASPSPs which support specified psu type
+        description: Display only ASPSPs which support specified psu type
+      - name: service
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Service'
+          description: Display only ASPSPs which support specified service
+        description: Display only ASPSPs which support specified service
+      - name: payment_type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/PaymentType'
+          description: Display only ASPSPs which support specified payment type
+        description: Display only ASPSPs which support specified payment type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAspspsResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '408':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Timeout
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+  /application:
+    get:
+      tags:
+      - Misc
+      summary: Get application
+      description: Get application associated with provided JWT key ID
+      operationId: get_application_application_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetApplicationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '408':
+          description: Request Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ASPSP:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Name of the ASPSP (i.e. a bank or a similar financial institution)
+          examples:
+          - Nordea
+        country:
+          type: string
+          title: Country
+          description: Two-letter ISO 3166 code of the country, in which ASPSP operates
+          examples:
+          - FI
+      type: object
+      required:
+      - name
+      - country
+      title: ASPSP
+    ASPSPData:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Name of the ASPSP (i.e. a bank or a similar financial institution)
+          examples:
+          - Nordea
+        country:
+          type: string
+          title: Country
+          description: Two-letter ISO 3166 code of the country, in which ASPSP operates
+          examples:
+          - FI
+        logo:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Logo
+          description: ASPSP logo URL. It is possible to transform (e.g. resize) the
+            logo by adding special suffixes at the end of the URL. For example, `-/resize/500x/`.
+            For full list of possible transformations, please refer to https://uploadcare.com/docs/transformations/image_transformations/
+          examples:
+          - https://enablebanking.com/brands/FI/Nordea/
+        psu_types:
+          items:
+            $ref: '#/components/schemas/PSUType'
+          type: array
+          title: Psu Types
+          description: List of PSU types supported by ASPSP
+          examples:
+          - - personal
+            - business
+        auth_methods:
+          items:
+            $ref: '#/components/schemas/AuthMethod'
+          type: array
+          title: Auth Methods
+          description: List of available authentication methods. Provided in case
+            multiple methods are available or it is possible to supply authentication
+            credentials while initiating authorization.
+        maximum_consent_validity:
+          type: integer
+          title: Maximum Consent Validity
+          description: Maximum consent validity which bank supports in seconds
+        sandbox:
+          description: Applicable only to sandbox environment. Additional information
+            necessary to use sandbox environment.
+          $ref: '#/components/schemas/SandboxInfo'
+        beta:
+          type: boolean
+          title: Beta
+          description: Flag showing whether implementation is in beta mode
+        bic:
+          title: Bic
+          description: BIC of the ASPSP
+          type: string
+        required_psu_headers:
+          items:
+            type: string
+          type: array
+          title: Required Psu Headers
+          description: List of the headers required to indicate to data retrieval
+            endpoints that PSU is online. Either all required PSU headers or none
+            of them are to be provided, otherwise PSU_HEADER_NOT_PROVIDED error will
+            be returned.
+        payments:
+          items:
+            $ref: '#/components/schemas/ResponsePaymentType'
+          type: array
+          title: Payments
+          description: Supported payment types by country and their properties
+      type: object
+      required:
+      - name
+      - country
+      - logo
+      - psu_types
+      - auth_methods
+      - maximum_consent_validity
+      - beta
+      title: ASPSPData
+    Access:
+      properties:
+        accounts:
+          title: Accounts
+          description: 'List of accounts access to which is requested. If not set
+            behaviour depends on the
+
+            bank: some banks allow users to choose list of accessible accounts through
+            their
+
+            access consent UI, while other may provide access to all accounts or just
+            access to
+
+            the list of accounts.'
+          examples:
+          - - iban: FI1737631867613465
+          items:
+            $ref: '#/components/schemas/AccountIdentification'
+          type: array
+        balances:
+          type: boolean
+          title: Balances
+          description: Request consent with balances access
+          default: true
+        transactions:
+          type: boolean
+          title: Transactions
+          description: Request consent with transactions access
+          default: true
+        valid_until:
+          type: string
+          format: date-time
+          title: Valid Until
+          description: 'This parameter specifies the date and time until which the
+            authorised session
+
+            remains valid. The value must be in the RFC3339 date-time format with
+            a timezone
+
+            offset, e.g. `2025-12-01T12:00:00.000000+00:00`. The provided value cannot
+            exceed
+
+            the date and time, calculated as "now" + `maximum_consent_validity` (provided
+            in
+
+            seconds for each ASPSP in response to the GET /aspsps request). The provided
+            value
+
+            is subject to adjustment to comply with the ASPSP''s requirements. Specifically,
+            if
+
+            the provided value is less than the minimum consent validity allowed by
+            the ASPSP
+
+            (e.g., some ASPSPs require a minimum of 1 hour or 1 day), the consent
+            validity will
+
+            be adjusted to meet these requirements. However, the session validity
+            will remain
+
+            exactly as specified. This means that even if the consent remains valid
+            on the
+
+            ASPSP''s side, the session will expire based on the initially provided
+            value.'
+      type: object
+      required:
+      - valid_until
+      title: Access
+      example:
+        valid_until: '2019-08-24T14:15:22Z'
+    AccountIdentification:
+      properties:
+        iban:
+          title: Iban
+          description: International Bank Account Number (IBAN) - identification used
+            internationally by financial institutions to uniquely identify the account
+            of a customer. Further specifications of the format and content of the
+            IBAN can be found in the standard ISO 13616 "Banking and related financial
+            services - International Bank Account Number (IBAN)" version 1997-10-01,
+            or later revisions.
+          examples:
+          - FI8821291587733472
+          type: string
+        other:
+          description: Other identification if iban is not provided
+          examples:
+          - identification: '123456'
+            scheme_name: BBAN
+          $ref: '#/components/schemas/GenericIdentification'
+      type: object
+      title: AccountIdentification
+      example:
+        iban: FI0455231152453547
+    AccountResource:
+      properties:
+        account_id:
+          description: Primary account identifier
+          $ref: '#/components/schemas/AccountIdentification'
+        all_account_ids:
+          title: All Account Ids
+          description: All account identifiers provided by ASPSPs (including primary
+            identifier available in the accountId field)
+          items:
+            $ref: '#/components/schemas/GenericIdentification'
+          type: array
+        account_servicer:
+          description: Information about the financial institution servicing the account
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        name:
+          title: Name
+          description: Account holder(s) name
+          type: string
+        details:
+          title: Details
+          description: Account description set by PSU or provided by ASPSP
+          type: string
+        usage:
+          description: Specifies the usage of the account
+          $ref: '#/components/schemas/Usage'
+        cash_account_type:
+          $ref: '#/components/schemas/CashAccountType'
+          description: Specifies the type of the account
+        product:
+          title: Product
+          description: Product Name of the Bank for this account, proprietary definition
+          type: string
+        currency:
+          type: string
+          title: Currency
+          description: Specifies the currency of the account
+        psu_status:
+          title: Psu Status
+          description: Relationship between the PSU and the account - Account Holder
+            - Co-account Holder - Attorney
+          type: string
+        credit_limit:
+          description: Specifies credit limit of the account
+          $ref: '#/components/schemas/AmountType'
+        legal_age:
+          title: Legal Age
+          description: 'Specifies whether Enable Banking is confident that the account
+            holder is of legal age or is a minor. The field takes the following values:
+
+            true if the account holder is of legal age;
+
+            false if the account holder is a minor;
+
+            null (or the field is not set) if it is not possible to determine whether
+            the account holder is of legal age or a minor or if the legal age check
+            is not applicable (in cases such as if the account holder is a legal entity
+            or there are multiple account co-holders)'
+          type: boolean
+        uid:
+          title: Uid
+          description: Unique account identificator used for fetching account balances
+            and transactions. It is valid only until the session to which the account
+            belongs is in the AUTHORIZED status. It can be not set in case it is know
+            that it is not possible to fetch balances and transactions for the account
+            (for example, in case the account is blocked or closed at the ASPSP side).
+          type: string
+          format: uuid
+        identification_hash:
+          type: string
+          title: Identification Hash
+          description: Primary account identification hash. It can be used for matching
+            accounts between multiple sessions (even in case the sessions are authorized
+            by different PSUs).
+          examples:
+          - WwpbCiJhY2NvdW50IiwKImFjY291bnRfaWQiLAoiaWJhbiIKXQpd.E8GzhnnsFC7K+4e3YMYYKpyM83Zx6toXrjgcvPP/Lqc=
+        identification_hashes:
+          items:
+            type: string
+          type: array
+          title: Identification Hashes
+          description: List of possible account identification hashes. Identification
+            hash is based on the account number. Some accounts may have multiple account
+            numbers (e.g. IBAN and BBAN). This field contains all possible hashes.
+            Not all of these hashes can be used to uniquely identify an account and
+            that the primary goal of them is to be able to fuzzy matching of accounts
+            by certain properties. Primary hash is included in this list.
+          examples:
+          - - WwpbCiJhY2NvdW50IiwKImFjY291bnRfaWQiLAoiaWJhbiIKXQpd.E8GzhnnsFC7K+4e3YMYYKpyM83Zx6toXrjgcvPP/Lqc=
+            - WwpbCiJhc3BzcF9uYW1lIgpdLApbCiJhc3BzcF9jb3VudHJ5IgpdLApbCiJhY2NvdW50IiwKImFjY291bnRfaWQiLAoib3RoZXIiLAoic2NoZW1lX25hbWUiCl0sClsKImFjY291bnQiLAoiYWNjb3VudF9pZCIsCiJvdGhlciIsCiJpZGVudGlmaWNhdGlvbiIKXQpd.AOm/TULGPD4a4GdcWhR9xh0GPlPUZuB2O1S9SYFWEz0=
+      type: object
+      required:
+      - cash_account_type
+      - currency
+      - identification_hash
+      - identification_hashes
+      title: AccountResource
+    AddressType:
+      type: string
+      enum:
+      - Business
+      - Correspondence
+      - DeliveryTo
+      - MailTo
+      - POBox
+      - Postal
+      - Residential
+      - Statement
+      title: AddressType
+      example: Business
+      x-enum-descriptions:
+        Business: Business
+        Correspondence: Correspondence
+        DeliveryTo: DeliveryTo
+        MailTo: MailTo
+        POBox: POBox
+        Postal: Postal
+        Residential: Residential
+        Statement: Statement
+    AmountType:
+      properties:
+        currency:
+          type: string
+          title: Currency
+          description: ISO 4217 code of the currency of the amount
+          examples:
+          - EUR
+        amount:
+          type: string
+          pattern: ^-?\d+(\.\d+)?$
+          title: Amount
+          description: Numerical value or monetary figure associated with a particular
+            transaction, representing balance on an account, a fee or similar. Represented
+            as a decimal number, using . (dot) as a decimal separator. Allowed precision
+            (number of digits after the decimal separator) varies depending on the
+            currency and is validated differently depending on the context.
+          examples:
+          - '1.23'
+      type: object
+      required:
+      - currency
+      - amount
+      title: AmountType
+    AuthMethod:
+      properties:
+        name:
+          title: Name
+          description: Internal name of the authentication method
+          type: string
+        title:
+          title: Title
+          description: Human-readable title of the authentication method
+          type: string
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type to which the authentication method is applicable
+        credentials:
+          items:
+            $ref: '#/components/schemas/Credential'
+          type: array
+          title: Credentials
+          description: List of credentials which are possible to supply while initiating
+            authorization
+        approach:
+          $ref: '#/components/schemas/AuthenticationApproach'
+          description: Authentication approach used in the current authentication
+            method
+        hidden_method:
+          type: boolean
+          title: Hidden Method
+          description: Flag showing whether the current authentication method is hidden
+            from the user. If `true` then the user will not be able to select this
+            authentication method. It is only possible to select this authentication
+            method via API.
+      type: object
+      required:
+      - psu_type
+      - approach
+      - hidden_method
+      title: AuthMethod
+    AuthenticationApproach:
+      type: string
+      enum:
+      - REDIRECT
+      - DECOUPLED
+      - EMBEDDED
+      title: AuthenticationApproach
+      example: REDIRECT
+      x-enum-descriptions:
+        DECOUPLED: The TPP identifies the PSU and forwards the identification to the
+          ASPSP which processes the authentication through a decoupled device
+        EMBEDDED: The TPP identifies the PSU and forwards the identification to the
+          ASPSP which starts the authentication. The TPP forwards one authentication
+          factor of the PSU (e.g. OTP or response to a challenge)
+        REDIRECT: The PSU is redirected by the TPP to the ASPSP which processes identification
+          and authentication
+    AuthorizeSessionRequest:
+      properties:
+        code:
+          type: string
+          title: Code
+          description: Authorization code returned when redirecting PSU
+      type: object
+      required:
+      - code
+      title: AuthorizeSessionRequest
+    AuthorizeSessionResponse:
+      properties:
+        session_id:
+          type: string
+          format: uuid4
+          title: Session Id
+          description: ID of the PSU session
+        accounts:
+          items:
+            $ref: '#/components/schemas/AccountResource'
+          type: array
+          title: Accounts
+          description: List of authorized accounts
+        aspsp:
+          $ref: '#/components/schemas/ASPSP'
+          description: ASPSP used with the session
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type used with the session
+        access:
+          $ref: '#/components/schemas/Access'
+          description: Scope of access requested from ASPSP and confirmed by PSU
+          examples:
+          - valid_until: '2021-01-01T00:00:00Z'
+      type: object
+      required:
+      - session_id
+      - accounts
+      - aspsp
+      - psu_type
+      - access
+      title: AuthorizeSessionResponse
+    BalanceResource:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Label of the balance
+          examples:
+          - Booked balance
+        balance_amount:
+          $ref: '#/components/schemas/AmountType'
+          description: Structure aiming to embed the amount and the currency to be
+            used
+        balance_type:
+          $ref: '#/components/schemas/BalanceStatus'
+          description: Available balance type values
+          examples:
+          - CLBD
+        last_change_date_time:
+          title: Last Change Date Time
+          description: Timestamp of the last change of the balance amount
+          type: string
+          format: date-time
+        reference_date:
+          title: Reference Date
+          description: Reference date for the balance
+          type: string
+          format: date
+        last_committed_transaction:
+          title: Last Committed Transaction
+          description: Entry reference of the last transaction contributing to the
+            balance value
+          examples:
+          - 4604aa90f8a8418092d80c3270846f0a
+          type: string
+      type: object
+      required:
+      - name
+      - balance_amount
+      - balance_type
+      title: BalanceResource
+    BalanceStatus:
+      type: string
+      enum:
+      - CLAV
+      - CLBD
+      - FWAV
+      - INFO
+      - ITAV
+      - ITBD
+      - OPAV
+      - OPBD
+      - PRCD
+      - OTHR
+      - VALU
+      - XPCD
+      title: BalanceStatus
+      example: CLAV
+      x-enum-descriptions:
+        CLAV: (ISO20022 Closing Available) Closing available balance
+        CLBD: (ISO20022 ClosingBooked) Accounting Balance
+        FWAV: (ISO20022 ForwardAvailable) Balance that is at the disposal of account
+          holders on the date specified
+        INFO: (ISO20022 Information) Balance for informational purposes
+        ITAV: (ISO20022 InterimAvailable) Available balance calculated in the course
+          of the day
+        ITBD: (ISO20022 InterimBooked) Booked balance calculated in the course of
+          the day
+        OPAV: (ISO20022 OpeningAvailable) Opening balance that is at the disposal
+          of account holders at the beginning of the date specified
+        OPBD: (ISO20022 OpeningBooked) Book balance of the account at the beginning
+          of the account reporting period. It always equals the closing book balance
+          from the previous report
+        OTHR: Other Balance
+        PRCD: (ISO20022 PreviouslyClosedBooked) Balance of the account at the end
+          of the previous reporting period
+        VALU: Value-date balance
+        XPCD: (ISO20022 Expected) Instant Balance
+    BankTransactionCode:
+      properties:
+        description:
+          title: Description
+          description: Arbitrary transaction categorization description
+          examples:
+          - Utlandsbetalning
+          type: string
+        code:
+          title: Code
+          description: Specifies the family of a transaction within the domain
+          examples:
+          - '12'
+          type: string
+        sub_code:
+          title: Sub Code
+          description: Specifies the sub-product family of a transaction within a
+            specific family
+          examples:
+          - '32'
+          type: string
+      type: object
+      title: BankTransactionCode
+    Beneficiary:
+      properties:
+        creditor_agent:
+          description: Identification of the financial institution where the account
+            receiving funds is held
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        creditor:
+          description: Identification of the party receiving funds
+          $ref: '#/components/schemas/PartyIdentification'
+        creditor_account:
+          $ref: '#/components/schemas/GenericIdentification'
+          description: Identification of the account receiving funds
+        creditor_currency:
+          title: Creditor Currency
+          description: ISO 4217 currency code, in which the account receiving funds
+            is held
+          type: string
+      type: object
+      required:
+      - creditor_account
+      title: Beneficiary
+      example:
+        creditor:
+          name: Organisation/Person Name
+        creditor_account:
+          identification: FI0455231152453547
+          scheme_name: IBAN
+    CashAccountType:
+      type: string
+      enum:
+      - CACC
+      - CASH
+      - CARD
+      - LOAN
+      - SVGS
+      - OTHR
+      title: CashAccountType
+      example: CACC
+      x-enum-descriptions:
+        CACC: Account used to post debits and credits when no specific account has
+          been nominated
+        CARD: Account used for card payments only
+        CASH: Account used for the payment of cash
+        LOAN: Account used for loans
+        OTHR: Account not otherwise specified
+        SVGS: Account used for savings
+    CategoryPurposeCode:
+      type: string
+      enum:
+      - BONU
+      - CASH
+      - CBLK
+      - CCRD
+      - CORT
+      - DCRD
+      - DIVI
+      - DVPM
+      - EPAY
+      - FCOL
+      - GOVT
+      - HEDG
+      - ICCP
+      - IDCP
+      - INTC
+      - INTE
+      - LOAN
+      - MP2B
+      - MP2P
+      - OTHR
+      - PENS
+      - RPRE
+      - RRCT
+      - RVPM
+      - SALA
+      - SECU
+      - SSBE
+      - SUPP
+      - TAXS
+      - TRAD
+      - TREA
+      - VATX
+      - WHLD
+      title: CategoryPurposeCode
+      example: BONU
+      x-enum-descriptions:
+        BONU: 'Bonus Payment: Transaction is the payment of a bonus'
+        CASH: 'Cash Management Transfer: Transaction is a general cash management
+          instruction'
+        CBLK: 'Card Bulk Clearing: A Service that is settling money for a bulk of
+          card transactions, while referring to a specific transaction file or other
+          information like terminal ID, card acceptor ID or other transaction details'
+        CCRD: 'Credit Card Payment: Transaction is related to a payment of credit
+          card'
+        CORT: 'Trade Settlement Payment: Transaction is related to settlement of a
+          trade, eg a foreign exchange deal or a securities transaction'
+        DCRD: 'Debit Card Payment: Transaction is related to a payment of debit card'
+        DIVI: 'Dividend: Transaction is the payment of dividends'
+        DVPM: 'Deliver Against Payment: Code used to pre-advise the account servicer
+          of a forthcoming deliver against payment instruction'
+        EPAY: 'Epayment: Transaction is related to ePayment'
+        FCOL: 'Fee Collection: A Service that is settling card transaction related
+          fees between two parties'
+        GOVT: 'Government Payment: Transaction is a payment to or from a government
+          department'
+        HEDG: 'Hedging: Transaction is related to the payment of a hedging operation'
+        ICCP: 'Irrevocable Credit Card Payment: Transaction is reimbursement of credit
+          card payment'
+        IDCP: 'Irrevocable Debit Card Payment: Transaction is reimbursement of debit
+          card payment'
+        INTC: 'Intra Company Payment: Transaction is an intra-company payment, ie,
+          a payment between two companies belonging to the same group'
+        INTE: 'Interest: Transaction is the payment of interest'
+        LOAN: 'Loan: Transaction is related to the transfer of a loan to a borrower'
+        MP2B: Commercial Mobile P2B Payment
+        MP2P: Consumer Mobile P2P Payment
+        OTHR: 'Other Payment: Other payment purpose'
+        PENS: 'Pension Payment: Transaction is the payment of pension'
+        RPRE: 'Represented: Collection used to re-present previously reversed or returned
+          direct debit transactions'
+        RRCT: 'Reimbursement Received Credit Transfer: Transaction is related to a
+          reimbursement for commercial reasons of a correctly received credit transfer'
+        RVPM: 'Receive Against Payment: Code used to pre-advise the account servicer
+          of a forthcoming receive against payment instruction'
+        SALA: 'Salary Payment: Transaction is the payment of salaries'
+        SECU: 'Securities: Transaction is the payment of securities'
+        SSBE: 'Social Security Benefit: Transaction is a social security benefit,
+          ie payment made by a government to support individuals'
+        SUPP: 'Supplier Payment: Transaction is related to a payment to a supplier'
+        TAXS: 'Tax Payment: Transaction is the payment of taxes'
+        TRAD: 'Trade: Transaction is related to the payment of a trade finance transaction'
+        TREA: 'Treasury Payment: Transaction is related to treasury operations.  E.g.
+          financial contract settlement'
+        VATX: 'Value Added Tax Payment: Transaction is the payment of value added
+          tax'
+        WHLD: 'With Holding: Transaction is the payment of withholding tax'
+    ChargeBearerCode:
+      type: string
+      enum:
+      - SLEV
+      - SHAR
+      - DEBT
+      - CRED
+      title: ChargeBearerCode
+      example: SLEV
+      x-enum-descriptions:
+        CRED: The Payee (recipient of the payment) will incur all of the payment transaction
+          fees
+        DEBT: The Payer (sender of the payment) will bear all of the payment transaction
+          fees
+        SHAR: Shared. Transaction charges on the sender side are to be borne by the
+          debtor, transaction charges on the receiver side are to be borne by the
+          creditor
+        SLEV: Service level. Charges are to be applied following the rules agreed
+          in the service level and/or scheme
+    ClearingSystemMemberIdentification:
+      properties:
+        clearing_system_id:
+          title: Clearing System Id
+          description: Specification of a pre-agreed offering between clearing agents
+            or the channel through which the payment instruction is processed.
+          examples:
+          - NZNCC
+          type: string
+        member_id:
+          title: Member Id
+          description: Identification of a member of a clearing system.
+          examples:
+          - 020368
+          type: string
+      type: object
+      title: ClearingSystemMemberIdentification
+    ContactDetails:
+      properties:
+        email_address:
+          title: Email Address
+          description: Email address of a person
+          type: string
+        phone_number:
+          title: Phone Number
+          description: Phone number of a person
+          type: string
+      type: object
+      title: ContactDetails
+    CreatePaymentRequest:
+      properties:
+        payment_type:
+          $ref: '#/components/schemas/PaymentType'
+          description: Specifies the type of payment used
+        payment_request:
+          $ref: '#/components/schemas/PaymentRequestResource'
+          description: Specifies the details required to initiate a payment
+        aspsp:
+          $ref: '#/components/schemas/ASPSP'
+          description: ASPSP that PSU is going to be authenticated to
+          examples:
+          - country: FI
+            name: Nordea
+        state:
+          type: string
+          title: State
+          description: Arbitrary string. Same string will be returned in query parameter
+            when redirecting to the URL passed via redirect_url parameter
+          examples:
+          - 3a57e2d3-2e0c-4336-af9b-7fa94f0606a3
+        redirect_url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Redirect Url
+          description: URL that PSU will be redirected to after authorization
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type which consent is created for
+        credentials:
+          title: Credentials
+          description: PSU credentials (User ID, company ID etc.) If not provided,
+            then those are going to be asked from a PSU during authorization
+          examples:
+          - userId: MyUsername
+          type: object
+        auth_method:
+          title: Auth Method
+          description: Desired authorization method (in case ASPSP supports multiple).
+            Supported methods can be obtained from ASPSP auth_methods
+          type: string
+        language:
+          title: Language
+          description: Preferred PSU language. Two-letter lowercase language code
+          examples:
+          - fi
+          type: string
+          pattern: ^[a-z]{2}$
+        webhook_url:
+          title: Webhook Url
+          description: URL that will receive POST requests notifying about payment
+            changes
+          examples:
+          - https://app.com/payment-webhook-handler
+          type: string
+          minLength: 1
+          format: uri
+      type: object
+      required:
+      - payment_type
+      - payment_request
+      - aspsp
+      - state
+      - redirect_url
+      - psu_type
+      title: CreatePaymentRequest
+      example:
+        aspsp:
+          country: FI
+          name: S-Pankki
+        payment_request:
+          credit_transfer_transaction:
+          - beneficiary:
+              creditor:
+                name: Organisation/Person Name
+              creditor_account:
+                identification: FI0455231152453547
+                scheme_name: IBAN
+            instructed_amount:
+              amount: '10.33'
+              currency: EUR
+        payment_type: SEPA
+        psu_type: personal
+        redirect_url: https://google.com/
+        state: b463a960-9616-4df6-909f-f80884190c22
+    CreatePaymentResponse:
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          title: Payment Id
+          description: Payment ID
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+          description: Payment status
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+          description: URL to redirect a PSU to
+      type: object
+      required:
+      - payment_id
+      - status
+      - url
+      title: CreatePaymentResponse
+      example:
+        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        status: PDNG
+        url: https://sandbox.tilisy.com/pis/start?payment_id=9bbd806c-f144-4eb5-8eb7-48650ff4d56b
+    Credential:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Internal name of the credential. The name is to be used when
+            passing credentials to the "start user authorization" request
+          examples:
+          - userId
+        title:
+          type: string
+          title: Title
+          description: Title for the credential to be displayed to PSU
+          examples:
+          - User ID
+        required:
+          type: boolean
+          title: Required
+          description: Indication whether the credential is required
+          examples:
+          - true
+        description:
+          title: Description
+          description: Description of the credential to be displayed to PSU
+          examples:
+          - Your identifier used for logging in to online banking
+          type: string
+        template:
+          title: Template
+          description: Perl compatible regular expression used for check of the credential
+            format
+          examples:
+          - ^\d{8}$
+          type: string
+      type: object
+      required:
+      - name
+      - title
+      - required
+      title: Credential
+    CreditDebitIndicator:
+      type: string
+      enum:
+      - CRDT
+      - DBIT
+      title: CreditDebitIndicator
+      example: CRDT
+      x-enum-descriptions:
+        CRDT: Credit type transaction
+        DBIT: Debit type transaction
+    CreditTransferTransaction:
+      properties:
+        instructed_amount:
+          $ref: '#/components/schemas/AmountType'
+          description: Structure aiming to embed the amount and the currency to be
+            used
+        beneficiary:
+          $ref: '#/components/schemas/Beneficiary'
+          description: Specification of a beneficiary
+        payment_id:
+          description: Set of elements used to reference a payment instruction
+          $ref: '#/components/schemas/PaymentIdentification'
+        requested_execution_date:
+          $ref: '#/components/schemas/RequestedExecutionDate'
+        reference_number:
+          $ref: '#/components/schemas/ReferenceNumber'
+        end_date:
+          $ref: '#/components/schemas/EndDate'
+        execution_rule:
+          description: Execution date shifting rule for standing orders
+          $ref: '#/components/schemas/ExecutionRule'
+        frequency:
+          description: Frequency rule for standing orders
+          $ref: '#/components/schemas/FrequencyCode'
+        ultimate_debtor:
+          description: Identifies the original party from whom the funds originate
+            in the payment transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        ultimate_creditor:
+          description: Identifies the final party receiving the funds in the payment
+            transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        regulatory_reporting:
+          title: Regulatory Reporting
+          description: List of needed regulatory reporting codes for international
+            payments
+          items:
+            $ref: '#/components/schemas/RegulatoryReporting'
+          type: array
+          maxItems: 10
+          minItems: 1
+        remittance_information:
+          $ref: '#/components/schemas/UnstructuredRemittanceInformation'
+      type: object
+      required:
+      - instructed_amount
+      - beneficiary
+      title: CreditTransferTransaction
+      description: Payment instruction to be executed by the ASPSP
+    CreditTransferTransactionDetails:
+      properties:
+        instructed_amount:
+          $ref: '#/components/schemas/AmountType'
+          description: Structure aiming to embed the amount and the currency to be
+            used
+        beneficiary:
+          $ref: '#/components/schemas/Beneficiary'
+          description: Specification of a beneficiary
+        payment_id:
+          description: Set of elements used to reference a payment instruction
+          $ref: '#/components/schemas/PaymentIdentification'
+        requested_execution_date:
+          $ref: '#/components/schemas/RequestedExecutionDate'
+        reference_number:
+          $ref: '#/components/schemas/ReferenceNumber'
+        end_date:
+          $ref: '#/components/schemas/EndDate'
+        execution_rule:
+          description: Execution date shifting rule for standing orders
+          $ref: '#/components/schemas/ExecutionRule'
+        frequency:
+          description: Frequency rule for standing orders
+          $ref: '#/components/schemas/FrequencyCode'
+        ultimate_debtor:
+          description: Identifies the original party from whom the funds originate
+            in the payment transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        ultimate_creditor:
+          description: Identifies the final party receiving the funds in the payment
+            transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        regulatory_reporting:
+          title: Regulatory Reporting
+          description: List of needed regulatory reporting codes for international
+            payments
+          items:
+            $ref: '#/components/schemas/RegulatoryReporting'
+          type: array
+          maxItems: 10
+          minItems: 1
+        remittance_information:
+          $ref: '#/components/schemas/UnstructuredRemittanceInformation'
+        transaction_id:
+          title: Transaction Id
+          description: Unique identifier of the payment transaction, which can be
+            used for fetching details through the get payment transaction endpoint
+          type: string
+        transaction_status:
+          description: Status of the payment transaction
+          $ref: '#/components/schemas/PaymentStatus'
+      type: object
+      required:
+      - instructed_amount
+      - beneficiary
+      title: CreditTransferTransactionDetails
+      description: Details of the payment instruction executed (to be executed) by
+        the ASPSP
+    CurrencyCode:
+      type: string
+      title: CurrencyCode
+      description: Specifies the currency of the amount or of the account according
+        the ISO 4217 standard
+      example: EUR
+    EndDate:
+      type: string
+      format: date
+      title: EndDate
+      description: 'The last applicable day of execution for a given standing order.
+
+        If not given, the standing order is considered as endless.
+
+        '
+    Environment:
+      type: string
+      enum:
+      - SANDBOX
+      - PRODUCTION
+      title: Environment
+      example: SANDBOX
+      x-enum-descriptions:
+        PRODUCTION: PRODUCTION
+        SANDBOX: SANDBOX
+    ErrorCode:
+      type: string
+      enum:
+      - ACCESS_DENIED
+      - ACCOUNT_DOES_NOT_EXIST
+      - ALREADY_AUTHORIZED
+      - ASPSP_ACCOUNT_NOT_ACCESSIBLE
+      - ASPSP_ERROR
+      - ASPSP_TIMEOUT
+      - ASPSP_RATE_LIMIT_EXCEEDED
+      - AUTHORIZATION_NOT_PROVIDED
+      - CLOSED_SESSION
+      - DATE_TO_WITHOUT_DATE_FROM
+      - DATE_FROM_IN_FUTURE
+      - EXPIRED_AUTHORIZATION_CODE
+      - EXPIRED_SESSION
+      - INVALID_ACCOUNT_ID
+      - INVALID_HOST
+      - UNAUTHORIZED_IP
+      - NO_ACCOUNTS_ADDED
+      - PAYMENT_NOT_FOUND
+      - PSU_HEADER_NOT_PROVIDED
+      - REDIRECT_URI_NOT_ALLOWED
+      - REVOKED_SESSION
+      - SESSION_DOES_NOT_EXIST
+      - UNAUTHORIZED_ACCESS
+      - UNTRUSTED_PAYMENT_PARTY
+      - WEBHOOK_URI_NOT_ALLOWED
+      - WRONG_ASPSP_PROVIDED
+      - WRONG_AUTHORIZATION_CODE
+      - WRONG_DATE_INTERVAL
+      - WRONG_CREDENTIALS_PROVIDED
+      - WRONG_REQUEST_PARAMETERS
+      - WRONG_SESSION_STATUS
+      - WRONG_TRANSACTIONS_PERIOD
+      - WRONG_CONTINUATION_KEY
+      - TRANSACTION_DOES_NOT_EXIST
+      - PAYMENT_LIMIT_EXCEEDED
+      - ASPSP_PAYMENT_NOT_ACCESSIBLE
+      - INVALID_PAYMENT
+      title: ErrorCode
+      example: PSU_HEADER_NOT_PROVIDED
+      x-enum-descriptions:
+        ACCESS_DENIED: Access to this resource is denied. Check services available
+          for your application.
+        ACCOUNT_DOES_NOT_EXIST: No account found matching provided id
+        ALREADY_AUTHORIZED: Session is already authorized
+        ASPSP_ACCOUNT_NOT_ACCESSIBLE: The PSU does not have access to the requested
+          account or it doesn't exist
+        ASPSP_ERROR: Error interacting with ASPSP
+        ASPSP_PAYMENT_NOT_ACCESSIBLE: Payment can not be requested from the ASPSP
+        ASPSP_RATE_LIMIT_EXCEEDED: ASPSP Rate limit exceeded
+        ASPSP_TIMEOUT: Timeout interacting with ASPSP
+        AUTHORIZATION_NOT_PROVIDED: Authorization header is not provided
+        CLOSED_SESSION: Session is closed
+        DATE_FROM_IN_FUTURE: date_from can not be in the future
+        DATE_TO_WITHOUT_DATE_FROM: date_from must be provided if date_to provided
+        EXPIRED_AUTHORIZATION_CODE: Authorization code is expired
+        EXPIRED_SESSION: Session is expired
+        INVALID_ACCOUNT_ID: Either iban or other account identification is required
+        INVALID_HOST: Invalid host
+        INVALID_PAYMENT: Invalid or expired payment provided
+        NO_ACCOUNTS_ADDED: No allowed accounts added to the application
+        PAYMENT_LIMIT_EXCEEDED: The amount value or the the number of transactions
+          exceeds the limit
+        PAYMENT_NOT_FOUND: Payment not found
+        PSU_HEADER_NOT_PROVIDED: Required PSU header not provided
+        REDIRECT_URI_NOT_ALLOWED: Redirect URI not allowed
+        REVOKED_SESSION: Session is revoked
+        SESSION_DOES_NOT_EXIST: No session found matching provided id
+        TRANSACTION_DOES_NOT_EXIST: No transaction found matching provided id
+        UNAUTHORIZED_ACCESS: Unauthorized access
+        UNAUTHORIZED_IP: Used IP address is not authorized to access the resource
+        UNTRUSTED_PAYMENT_PARTY: Either creditor or debtor account is not trusted
+        WEBHOOK_URI_NOT_ALLOWED: Webhook URI not allowed
+        WRONG_ASPSP_PROVIDED: Wrong ASPSP name provided
+        WRONG_AUTHORIZATION_CODE: Wrong authorization code provided
+        WRONG_CONTINUATION_KEY: Wrong continuation key provided
+        WRONG_CREDENTIALS_PROVIDED: Wrong credentials provided
+        WRONG_DATE_INTERVAL: date_from should be less than or equal date_to
+        WRONG_REQUEST_PARAMETERS: Wrong request parameters provided
+        WRONG_SESSION_STATUS: Wrong session status
+        WRONG_TRANSACTIONS_PERIOD: Wrong transactions period requested
+    ErrorResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+          description: Error message
+          examples:
+          - Required PSU header not provided
+        code:
+          title: Code
+          description: Error code, identical to the http response code
+          examples:
+          - 422
+          type: integer
+        error:
+          description: Text error code
+          examples:
+          - PSU_HEADER_NOT_PROVIDED
+          $ref: '#/components/schemas/ErrorCode'
+        detail:
+          title: Detail
+          description: Detailed explanation of an error
+          examples:
+          - PSU header psuIpAddress is not provided
+      type: object
+      required:
+      - message
+      title: ErrorResponse
+    ExchangeRate:
+      properties:
+        unit_currency:
+          description: ISO 4217 code of the currency, in which the rate of exchange
+            is expressed in a currency exchange. In the example 1GBP = xxxCUR, the
+            unit currency is GBP.
+          $ref: '#/components/schemas/CurrencyCode'
+        exchange_rate:
+          title: Exchange Rate
+          description: The factor used for conversion of an amount from one currency
+            to another. This reflects the price at which one currency was bought with
+            another currency.
+          type: string
+        rate_type:
+          description: Specifies the type of exchange rate applied to the transaction
+          $ref: '#/components/schemas/RateType'
+        contract_identification:
+          title: Contract Identification
+          description: Unique and unambiguous reference to the foreign exchange contract
+            agreed between the initiating party/creditor and the debtor agent.
+          type: string
+        instructed_amount:
+          description: Original amount, in which transaction was initiated. In particular,
+            for cross-currency card transactions, the value represents original value
+            of a purchase or a withdrawal in a currency different from the card's
+            native or default currency.
+          $ref: '#/components/schemas/AmountType'
+      type: object
+      title: ExchangeRate
+    ExecutionRule:
+      type: string
+      enum:
+      - FWNG
+      - PREC
+      title: ExecutionRule
+      example: FWNG
+      x-enum-descriptions:
+        FWNG: Following
+        PREC: Preceding
+    FinancialInstitutionIdentification:
+      properties:
+        bic_fi:
+          title: Bic Fi
+          description: Code allocated to a financial institution by the ISO 9362 Registration
+            Authority as described in ISO 9362 "Banking - Banking telecommunication
+            messages - Business identification code (BIC)".
+          type: string
+        clearing_system_member_id:
+          description: Information used to identify a member within a clearing system.
+          $ref: '#/components/schemas/ClearingSystemMemberIdentification'
+        name:
+          title: Name
+          description: Name of the financial institution
+          type: string
+      type: object
+      title: FinancialInstitutionIdentification
+    FrequencyCode:
+      type: string
+      enum:
+      - DAIL
+      - WEEK
+      - TOWK
+      - MNTH
+      - TOMN
+      - QUTR
+      - SEMI
+      - YEAR
+      title: FrequencyCode
+      example: DAIL
+      x-enum-descriptions:
+        DAIL: Daily
+        MNTH: Monthly
+        QUTR: Quarterly
+        SEMI: Semi annual
+        TOMN: Every two months
+        TOWK: Every two weeks
+        WEEK: Weekly
+        YEAR: Annual
+    GenericIdentification:
+      properties:
+        identification:
+          type: string
+          title: Identification
+          description: An identifier
+          examples:
+          - '12345678'
+        scheme_name:
+          $ref: '#/components/schemas/SchemeName'
+          description: Name of the identification scheme. Partially based on ISO20022
+            external code list
+          examples:
+          - BBAN
+        issuer:
+          title: Issuer
+          description: Entity that assigns the identification. this could a country
+            code or any organisation name or identifier that can be recognized by
+            both parties
+          examples:
+          - FR
+          type: string
+      type: object
+      required:
+      - identification
+      - scheme_name
+      title: GenericIdentification
+      example:
+        identification: '123456'
+        scheme_name: BBAN
+    GetApplicationResponse:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Application name
+        description:
+          title: Description
+          description: Application description
+          type: string
+        kid:
+          type: string
+          format: uuid4
+          title: Kid
+          description: Application key id
+        environment:
+          $ref: '#/components/schemas/Environment'
+          description: Application environment
+        redirect_urls:
+          items:
+            type: string
+            minLength: 1
+            format: uri
+          type: array
+          title: Redirect Urls
+          description: List of allowed redirect urls
+        active:
+          type: boolean
+          title: Active
+          description: Indication whether the application is active
+        countries:
+          items:
+            type: string
+          type: array
+          title: Countries
+          description: List of supported countries
+        services:
+          items:
+            $ref: '#/components/schemas/Service'
+          type: array
+          title: Services
+          description: List of supported services
+      type: object
+      required:
+      - name
+      - kid
+      - environment
+      - redirect_urls
+      - active
+      - countries
+      - services
+      title: GetApplicationResponse
+    GetAspspsResponse:
+      properties:
+        aspsps:
+          items:
+            $ref: '#/components/schemas/ASPSPData'
+          type: array
+          title: Aspsps
+          description: List of available ASPSPs and countries
+      type: object
+      required:
+      - aspsps
+      title: GetAspspsResponse
+    GetPaymentResponse:
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          title: Payment Id
+          description: Payment ID
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+          description: Payment status
+        payment_details:
+          $ref: '#/components/schemas/PaymentRequestResourceDetails'
+          description: Payment request
+        final_status:
+          type: boolean
+          title: Final Status
+          description: Flag showing whether payment status is final
+        status_reason_information:
+          description: Payment status reason information, only available for rejected
+            payments
+          $ref: '#/components/schemas/StatusReasonInformation'
+      type: object
+      required:
+      - payment_id
+      - status
+      - payment_details
+      - final_status
+      title: GetPaymentResponse
+    GetPaymentTransactionResponse:
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          title: Payment Id
+          description: Payment ID
+        transaction_details:
+          $ref: '#/components/schemas/CreditTransferTransactionDetails'
+          description: Payment transaction details
+      type: object
+      required:
+      - payment_id
+      - transaction_details
+      title: GetPaymentTransactionResponse
+    GetSessionResponse:
+      properties:
+        status:
+          $ref: '#/components/schemas/SessionStatus'
+          description: Session status
+          examples:
+          - AUTHORIZED
+        accounts:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Accounts
+          description: List of account ids available in the session
+        accounts_data:
+          items:
+            $ref: '#/components/schemas/SessionAccount'
+          type: array
+          title: Accounts Data
+          description: Accounts data stored in the session
+        aspsp:
+          $ref: '#/components/schemas/ASPSP'
+          description: ASPSP used with the session
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type used with the session
+        psu_id_hash:
+          type: string
+          title: Psu Id Hash
+          description: Hashed unique identification of a PSU used by the client application.
+            In case PSU ID is not passed by the client application, the hash is calculated
+            based on a random value. The hash also inherits the application ID, so
+            different hashes will be calculated when using the same PSU ID with different
+            applications.
+        access:
+          $ref: '#/components/schemas/Access'
+          description: Scope of access requested from ASPSP and confirmed by PSU
+          examples:
+          - valid_until: '2020-12-01T12:00:00.000000+00:00'
+        created:
+          type: string
+          format: date-time
+          title: Created
+          description: Date and time when the session was created
+          examples:
+          - '2020-12-01T12:00:00.000000+00:00'
+        authorized:
+          title: Authorized
+          description: Date and time when the session was authorized
+          examples:
+          - '2020-12-01T12:00:00.000000+00:00'
+          type: string
+          format: date-time
+        closed:
+          title: Closed
+          description: Date and time when the session was closed
+          type: string
+          format: date-time
+      type: object
+      required:
+      - status
+      - accounts
+      - accounts_data
+      - aspsp
+      - psu_type
+      - psu_id_hash
+      - access
+      - created
+      title: GetSessionResponse
+      example:
+        access:
+          valid_until: '2020-12-01T12:00:00.000000+00:00'
+        accounts:
+        - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        accounts_data:
+        - identification_hash: WwpbCiJhY2NvdW50IiwKImFjY291bnRfaWQiLAoiaWJhbiIKXQpd.E8GzhnnsFC7K+4e3YMYYKpyM83Zx6toXrjgcvPP/Lqc=
+          uid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        aspsp:
+          country: FI
+          name: Nordea
+        authorized: '2020-12-01T12:00:00.000000+00:00'
+        created: '2020-12-01T12:00:00.000000+00:00'
+        psu_type: business
+        status: AUTHORIZED
+    HalBalances:
+      properties:
+        balances:
+          items:
+            $ref: '#/components/schemas/BalanceResource'
+          type: array
+          title: Balances
+          description: List of account balances
+      type: object
+      required:
+      - balances
+      title: HalBalances
+    HalTransactions:
+      properties:
+        transactions:
+          items:
+            $ref: '#/components/schemas/Transaction'
+          type: array
+          title: Transactions
+          description: List of transactions
+        continuation_key:
+          title: Continuation Key
+          description: Value to retrieve next page of transactions. Null if there
+            are no more pages. Only valid in current session.
+          type: string
+      type: object
+      required:
+      - transactions
+      title: HalTransactions
+    PSUType:
+      type: string
+      enum:
+      - business
+      - personal
+      title: PSUType
+      example: business
+      x-enum-descriptions:
+        business: business
+        personal: personal
+    PartyIdentification:
+      properties:
+        name:
+          title: Name
+          description: Name by which a party is known and which is usually used to
+            identify that party.
+          examples:
+          - MyPreferredAisp
+          type: string
+        postal_address:
+          description: Information that locates and identifies a specific address,
+            as defined by postal services
+          $ref: '#/components/schemas/PostalAddress'
+        organisation_id:
+          description: Unique identification of an account, a person or an organisation,
+            as assigned by an issuer
+          $ref: '#/components/schemas/GenericIdentification'
+        private_id:
+          description: Unique identification of an account, a person or an organisation,
+            as assigned by an issuer
+          $ref: '#/components/schemas/GenericIdentification'
+        contact_details:
+          description: Specifies the contact details associated with a person or an
+            organisation
+          $ref: '#/components/schemas/ContactDetails'
+      type: object
+      title: PartyIdentification
+      example:
+        name: MyPreferredAisp
+        postal_address:
+          address_line:
+          - Mr Asko Teirila PO Box 511
+          - 39140 AKDENMAA FINLAND
+          address_type: Business
+          building_number: '4'
+          country: FI
+          country_sub_division: Uusimaa
+          department: Department of resources
+          post_code: '00123'
+          street_name: Vasavagen
+          sub_department: Sub Dpartment of resources
+          town_name: Helsinki
+    PaymentIdentification:
+      properties:
+        instruction_id:
+          title: Instruction Id
+          description: 'Unique identification as assigned by an instructing party
+            for an instructed party to unambiguously identify the instruction.
+
+
+            API: Unique identification shared between the PISP and the ASPSP
+
+            '
+          type: string
+        end_to_end_id:
+          title: End To End Id
+          description: 'Unique identification assigned by the initiating party to
+            unambiguously identify the transaction. This identification is passed
+            on, unchanged, throughout the entire end-to-end chain.
+
+
+            API: Unique identification shared between the merchant and the PSU
+
+            '
+          type: string
+      type: object
+      title: PaymentIdentification
+    PaymentInformationId:
+      type: string
+      title: PaymentInformationId
+      description: 'Reference assigned by a sending party to unambiguously identify
+        the payment information block within the message.
+
+        '
+    PaymentRequestResource:
+      properties:
+        payment_information_id:
+          description: Reference assigned by a sending party to unambiguously identify
+            the payment information block within the message
+          $ref: '#/components/schemas/PaymentInformationId'
+        payment_type_information:
+          description: Set of elements used to further specify the type of payment
+          $ref: '#/components/schemas/PaymentTypeInformation'
+        debtor:
+          description: Identification of the party sending funds
+          $ref: '#/components/schemas/PartyIdentification'
+        debtor_account:
+          description: Identification of the account from which funds are sent when
+            the payment is executed. When the debtor account is not provided it is
+            to be chosen by the PSU during payment authorisation flow.
+          $ref: '#/components/schemas/GenericIdentification'
+        debtor_agent:
+          description: Identification of the financial institution where the debtor
+            account is held. To be provided only in case the financial institution
+            can not be unambiguously identified the ASPSP name towards which the payment
+            is initiated.
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        debtor_currency:
+          type: string
+          title: Debtor Currency
+          description: ISO 4217 code, in which debtor account is held
+          default: XXX
+        purpose:
+          description: Underlying reason for the payment
+          $ref: '#/components/schemas/PurposeCode'
+        charge_bearer:
+          description: Specifies which party/parties will bear the charges associated
+            with the processing of the payment
+          $ref: '#/components/schemas/ChargeBearerCode'
+        credit_transfer_transaction:
+          items:
+            $ref: '#/components/schemas/CreditTransferTransaction'
+          type: array
+          minItems: 1
+          title: Credit Transfer Transaction
+          description: Payment instructions to be executed towards one or multiple
+            beneficiaries in the payment process. Maximum number of transactions depend
+            on the ASPSP and type of the payment taking into accounts its specificities
+            about payment request handling.
+      type: object
+      required:
+      - credit_transfer_transaction
+      title: PaymentRequestResource
+      example:
+        credit_transfer_transaction:
+        - beneficiary:
+            creditor:
+              name: Organisation/Person Name
+            creditor_account:
+              identification: FI0455231152453547
+              scheme_name: IBAN
+          instructed_amount:
+            amount: '10.33'
+            currency: EUR
+        debtor_account:
+          identification: FI7727551317119265
+          scheme_name: IBAN
+    PaymentRequestResourceDetails:
+      properties:
+        payment_information_id:
+          description: Reference assigned by a sending party to unambiguously identify
+            the payment information block within the message
+          $ref: '#/components/schemas/PaymentInformationId'
+        payment_type_information:
+          description: Set of elements used to further specify the type of payment
+          $ref: '#/components/schemas/PaymentTypeInformation'
+        debtor:
+          description: Identification of the party sending funds
+          $ref: '#/components/schemas/PartyIdentification'
+        debtor_account:
+          description: Identification of the account from which funds are sent when
+            the payment is executed. When the debtor account is not provided it is
+            to be chosen by the PSU during payment authorisation flow.
+          $ref: '#/components/schemas/GenericIdentification'
+        debtor_agent:
+          description: Identification of the financial institution where the debtor
+            account is held. To be provided only in case the financial institution
+            can not be unambiguously identified the ASPSP name towards which the payment
+            is initiated.
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        debtor_currency:
+          type: string
+          title: Debtor Currency
+          description: ISO 4217 code, in which debtor account is held
+          default: XXX
+        purpose:
+          description: Underlying reason for the payment
+          $ref: '#/components/schemas/PurposeCode'
+        charge_bearer:
+          description: Specifies which party/parties will bear the charges associated
+            with the processing of the payment
+          $ref: '#/components/schemas/ChargeBearerCode'
+        credit_transfer_transaction:
+          title: Credit Transfer Transaction
+          items:
+            $ref: '#/components/schemas/CreditTransferTransactionDetails'
+          type: array
+      type: object
+      title: PaymentRequestResourceDetails
+      example:
+        credit_transfer_transaction:
+        - beneficiary:
+            creditor:
+              name: Organisation/Person Name
+            creditor_account:
+              identification: FI0455231152453547
+              scheme_name: IBAN
+          instructed_amount:
+            amount: '10.33'
+            currency: EUR
+        debtor_account:
+          identification: FI7727551317119265
+          scheme_name: IBAN
+    PaymentStatus:
+      type: string
+      enum:
+      - ACCC
+      - ACCP
+      - ACSC
+      - ACSP
+      - ACTC
+      - ACWC
+      - ACWP
+      - PART
+      - RCVD
+      - PDNG
+      - RJCT
+      - ACPT
+      - ACCR
+      - RJCR
+      - PACR
+      - PDCR
+      - CNCL
+      - 'NULL'
+      title: PaymentStatus
+      example: ACCC
+      x-enum-descriptions:
+        ACCC: AcceptedCreditSettlementCompleted. Settlement on the creditor's account
+          has been completed.
+        ACCP: AcceptedCustomerProfile. Preceding check of technical validation was
+          successful. Customer profile check was also successful.
+        ACCR: AcceptedCancellationRequest. Cancellation is accepted.
+        ACPT: Accepted. Request is accepted.
+        ACSC: AcceptedSettlementCompleted. Settlement on the debtor's account has
+          been completed.
+        ACSP: AcceptedSettlementInProcess. All preceding checks such as technical
+          validation and customer profile were successful. Dynamic risk assessment
+          is now also successful and therefore the Payment Request has been accepted
+          for execution.
+        ACTC: AcceptedTechnicalValidation. Authentication and syntactical and semantical
+          validation are successful.
+        ACWC: AcceptedWithChange. Instruction is accepted but a change will be made,
+          such as date or remittance not sent.
+        ACWP: AcceptedWithoutPosting. Payment instruction included in the credit transfer
+          is accepted without being posted to the creditor's account.
+        CNCL: PaymentCancelled. Payment is cancelled.
+        'NULL': NoCancellationProcess. There is no cancellation process ongoing.
+        PACR: PartiallyAcceptedCancellationRequest. Cancellation is partially accepted.
+        PART: PartiallyAccepted. A number of transactions have been accepted, whereas
+          another number of transactions have not yet achieved 'accepted' status.
+        PDCR: PendingCancellationRequest. Cancellation request is pending.
+        PDNG: Pending. Payment request or individual transaction included in the Payment
+          Request is pending. Further checks and status update will be performed.
+        RCVD: Received. Payment initiation has been received by the receiving agent.
+        RJCR: RejectedCancellationRequest. Cancellation request is rejected.
+        RJCT: Rejected. Payment request  has been rejected.
+    PaymentType:
+      type: string
+      enum:
+      - SEPA
+      - INST_SEPA
+      - DOMESTIC
+      - CROSSBORDER
+      - DOMESTIC_SE_GIRO
+      - INTERNAL
+      - BULK_SEPA
+      - BULK_DOMESTIC
+      title: PaymentType
+      example: SEPA
+      x-enum-descriptions:
+        BULK_DOMESTIC: Domestic bulk credit transfers
+        BULK_SEPA: SEPA bulk credit transfers
+        CROSSBORDER: Crossborder credit transfers
+        DOMESTIC: Domestic credit transfers
+        DOMESTIC_SE_GIRO: Swedish domestic Giro payments (BankGiro/PlusGiro)
+        INST_SEPA: Instant SEPA credit transfers (without fallback to SEPA)
+        INTERNAL: Transfer made within an ASPSP
+        SEPA: SEPA credit transfers
+    PaymentTypeInformation:
+      properties:
+        instruction_priority:
+          description: Indicator of the urgency or order of importance that the instructing
+            party would like the instructed party to apply
+          $ref: '#/components/schemas/PriorityCode'
+        service_level:
+          description: Agreement under which or rules under which the transaction
+            should be processed. Specifies a pre-agreed service or level of service
+            between the parties, as published in an external service level code list
+          $ref: '#/components/schemas/ServiceLevelCode'
+        category_purpose:
+          description: Specifies the high level purpose of the instruction based on
+            a set of pre-defined categories. This is used by the initiating party
+            to provide information concerning the processing of the payment. It is
+            likely to trigger special processing by any of the agents involved in
+            the payment chain.
+          $ref: '#/components/schemas/CategoryPurposeCode'
+        local_instrument:
+          title: Local Instrument
+          description: User community specific instrument
+          type: string
+      type: object
+      title: PaymentTypeInformation
+    PostalAddress:
+      properties:
+        address_type:
+          description: Available address type values
+          examples:
+          - DeliveryTo
+          $ref: '#/components/schemas/AddressType'
+        department:
+          title: Department
+          description: Identification of a division of a large organisation or building.
+          examples:
+          - Department of resources
+          type: string
+        sub_department:
+          title: Sub Department
+          description: Identification of a sub-division of a large organisation or
+            building.
+          examples:
+          - Sub Department of resources
+          type: string
+        street_name:
+          title: Street Name
+          description: Name of a street or thoroughfare.
+          examples:
+          - Vasavagen
+          type: string
+        building_number:
+          title: Building Number
+          description: Number that identifies the position of a building on a street.
+          examples:
+          - '4'
+          type: string
+        post_code:
+          title: Post Code
+          description: 'Identifier consisting of a group of letters and/or numbers
+            that is
+
+            added to a postal address to assist the sorting of mail.'
+          examples:
+          - '00123'
+          type: string
+        town_name:
+          title: Town Name
+          description: Name of a built-up area, with defined boundaries, and a local
+            government.
+          examples:
+          - Helsinki
+          type: string
+        country_sub_division:
+          title: Country Sub Division
+          description: Identifies a subdivision of a country such as state, region,
+            county.
+          examples:
+          - Uusimaa
+          type: string
+        country:
+          title: Country
+          description: Two-letter ISO 3166 code of the country in which a person resides
+            (the place of a person's home). In the case of a company, it is the country
+            from which the affairs of that company are directed.
+          examples:
+          - FI
+          type: string
+        address_line:
+          title: Address Line
+          description: Unstructured address. The two lines must embed zip code and
+            town name
+          examples:
+          - - Mr Asko Teirila PO Box 511
+            - 39140 AKDENMAA FINLAND
+          items:
+            type: string
+          type: array
+      type: object
+      title: PostalAddress
+    PriorityCode:
+      type: string
+      enum:
+      - HIGH
+      - NORM
+      - EXPR
+      title: PriorityCode
+      example: HIGH
+      x-enum-descriptions:
+        EXPR: Express priority. Polish-specific priority code
+        HIGH: High priority
+        NORM: Normal priority
+    PurposeCode:
+      type: string
+      enum:
+      - ACCT
+      - CASH
+      - COMC
+      - CPKC
+      - TRPT
+      title: PurposeCode
+      example: ACCT
+      x-enum-descriptions:
+        ACCT: Funds moved between 2 accounts of same account holder at the same bank
+        CASH: General cash management instruction, may be used for Transfer Initiation
+        COMC: Transaction is related to a payment of commercial credit or debit
+        CPKC: General Carpark Charges Transaction is related to carpark charges
+        TRPT: Transport RoadPricing Transaction is for the payment to top-up pre-paid
+          card and electronic road pricing for the purpose of transportation
+    RateType:
+      type: string
+      enum:
+      - SPOT
+      - SALE
+      - AGRD
+      title: RateType
+      example: SPOT
+      x-enum-descriptions:
+        AGRD: Exchange rate applied is the rate agreed between the parties
+        SALE: Exchange rate applied is the market rate at the time of the sale.
+        SPOT: Exchange rate applied is the spot rate.
+    ReferenceNumber:
+      type: string
+      title: ReferenceNumber
+      description: 'This field specifies the reference assigned by the sender to unambiguously
+        identify the message.
+
+        '
+    ReferenceNumberScheme:
+      type: string
+      enum:
+      - SEBG
+      - NORF
+      - FIRF
+      - INTL
+      - BERF
+      title: ReferenceNumberScheme
+      example: SEBG
+      x-enum-descriptions:
+        BERF: Belgian reference number
+        FIRF: Finnish reference number
+        INTL: International reference number (starting with RF)
+        NORF: Norwegian KID (OCR)
+        SEBG: Swedish Bankgiro OCR
+    RegulatoryAuthority:
+      properties:
+        country:
+          type: string
+          title: Country
+          description: Two-letter ISO 3166 code of the country in which the regulatory
+            authority operates
+        name:
+          title: Name
+          description: Name of the regulatory authority
+          type: string
+      type: object
+      required:
+      - country
+      - name
+      title: RegulatoryAuthority
+    RegulatoryReporting:
+      properties:
+        authority:
+          description: Regulatory authority to which reporting shall be made
+          $ref: '#/components/schemas/RegulatoryAuthority'
+        details:
+          $ref: '#/components/schemas/RegulatoryReportingDetails'
+          description: Details to provide on the regulatory reporting information
+      type: object
+      required:
+      - details
+      title: RegulatoryReporting
+    RegulatoryReportingCode:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: Value of the code, i.e. what needs to be passed as a code when
+            filling in regulatory reporting details.
+        description:
+          title: Description
+          description: Regulatory authority to which reporting shall be made
+          type: string
+      type: object
+      required:
+      - value
+      - description
+      title: RegulatoryReportingCode
+    RegulatoryReportingDetails:
+      properties:
+        amount:
+          description: Amount of money to be reported. If not provided the total instructed
+            amount of the transaction is assumed.
+          $ref: '#/components/schemas/AmountType'
+        code:
+          title: Code
+          description: A code specifying the nature, purpose, and/or reason for the
+            transaction. Codes to be used depend on the regulatory authority, to which
+            they are being reported.
+          type: string
+        information:
+          title: Information
+          description: Additional details that cater for specific domestic regulatory
+            requirements.
+          type: string
+      type: object
+      required:
+      - information
+      title: RegulatoryReportingDetails
+    RemittanceInformationLineInfo:
+      properties:
+        min_length:
+          title: Min Length
+          description: Minimum length of remittance information line
+          type: integer
+        max_length:
+          title: Max Length
+          description: Maximum length of remittance information line
+          type: integer
+        pattern:
+          title: Pattern
+          description: Specifies a regexp pattern for the remittance information line
+          type: string
+      type: object
+      title: RemittanceInformationLineInfo
+    RequestedExecutionDate:
+      type: string
+      format: date
+      title: RequestedExecutionDate
+      description: 'Date at which the initiating party requests the clearing agent
+        to process the payment.
+
+        API:
+
+        This date can be used in the following cases:
+
+        - the single requested execution date for a payment having several instructions.
+        In this case, this field must be set at the payment level.
+
+        - the requested execution date for a given instruction within a payment. In
+        this case, this field must be set at each instruction level.
+
+        - The first date of execution for a standing order.
+
+        When the payment cannot be processed at this date, the ASPSP is allowed to
+        shift the applied execution date to the next possible execution date for non-standing
+        orders.
+
+        For standing orders, the [executionRule] parameter helps to compute the execution
+        date to be applied.
+
+        '
+    ResponsePaymentType:
+      properties:
+        payment_type:
+          $ref: '#/components/schemas/PaymentType'
+          description: Payment type name
+        max_transactions:
+          title: Max Transactions
+          description: Maximum number of transactions per payment
+          type: integer
+        currencies:
+          title: Currencies
+          description: List of supported currencies
+          items:
+            type: string
+          type: array
+        debtor_account_required:
+          type: boolean
+          title: Debtor Account Required
+          description: 'States if debtor account is required for payment initiation
+            request. When the debtor account is not provided it is to be chosen by
+            the PSU during payment authorisation flow. Create payment body field:
+            `payment_request.debtor_account`'
+          default: false
+        debtor_account_schemas:
+          title: Debtor Account Schemas
+          description: List of supported debtor account schemas
+          items:
+            $ref: '#/components/schemas/SchemeName'
+          type: array
+        creditor_account_schemas:
+          title: Creditor Account Schemas
+          description: List of supported creditor account schemas
+          items:
+            $ref: '#/components/schemas/SchemeName'
+          type: array
+        priority_codes:
+          title: Priority Codes
+          description: List of supported priority codes
+          items:
+            $ref: '#/components/schemas/PriorityCode'
+          type: array
+        charge_bearer_values:
+          title: Charge Bearer Values
+          description: List of supported charge bearer codes
+          items:
+            $ref: '#/components/schemas/ChargeBearerCode'
+          type: array
+        creditor_country_required:
+          title: Creditor Country Required
+          description: 'States if creditor country is required. Create payment body
+            field: `payment_request.credit_transfer_transaction[*].beneficiary.creditor.postal_address.country`'
+          default: false
+          type: boolean
+        creditor_name_required:
+          title: Creditor Name Required
+          description: 'States if creditor name is required.  Create payment body
+            field: `payment_request.credit_transfer_transaction[*].beneficiary.creditor.postal_address.country`'
+          default: false
+          type: boolean
+        creditor_postal_address_required:
+          title: Creditor Postal Address Required
+          description: 'States if creditor postal address is required. Create payment
+            body field: `payment_request.credit_transfer_transaction[*].beneficiary.creditor.postal_address`'
+          default: false
+          type: boolean
+        remittance_information_required:
+          title: Remittance Information Required
+          description: 'States if remittance information is required. Create payment
+            body field: `payment_request.credit_transfer_transaction[*].remittance_information`'
+          default: false
+          type: boolean
+        remittance_information_lines:
+          title: Remittance Information Lines
+          description: Properties of remittance information. Each item of the array
+            correspond to the remittance information line with the same index. When
+            provided, the number of lines in the remittance information should be
+            the same as the length of this array.
+          items:
+            $ref: '#/components/schemas/RemittanceInformationLineInfo'
+          type: array
+        debtor_currency_required:
+          title: Debtor Currency Required
+          description: 'States if debtor currency is required. Create payment body
+            field: `payment_request.debtor_currency`'
+          default: false
+          type: boolean
+        debtor_contact_email_required:
+          title: Debtor Contact Email Required
+          description: 'States if debtor''s contact email is required when a payment
+            this type is being initiated. Create payment body field: `payment_request.debtor.contact_details.email_address`'
+          default: false
+          type: boolean
+        debtor_contact_phone_required:
+          title: Debtor Contact Phone Required
+          description: 'States if debtor''s contact phone is required when a payment
+            this type is being initiated. Create payment body field: `payment_request.debtor.contact_details.phone_number`'
+          default: false
+          type: boolean
+        creditor_agent_bic_fi_required:
+          title: Creditor Agent Bic Fi Required
+          description: 'States if creditor agent bicFi is required. Create payment
+            body field: `payment_request.credit_transfer_transaction[*].beneficiary.creditor_agent.bic_fi`'
+          default: false
+          type: boolean
+        creditor_agent_clearing_system_member_id_required:
+          title: Creditor Agent Clearing System Member Id Required
+          description: 'States if creditor agent clearing system member ID is required.
+            Create payment body field: `payment_request.credit_transfer_transaction[*].beneficiary.creditor_agent.clearing_system_member_id`'
+          default: false
+          type: boolean
+        allowed_auth_methods:
+          title: Allowed Auth Methods
+          description: List of supported auth methods for this payment type
+          items:
+            type: string
+          type: array
+        regulatory_reporting_codes:
+          title: Regulatory Reporting Codes
+          description: List of supported codes for regulatory reporting details
+          items:
+            $ref: '#/components/schemas/RegulatoryReportingCode'
+          type: array
+        regulatory_reporting_code_required:
+          title: Regulatory Reporting Code Required
+          description: 'States if regulatory reporting shall be provided for credit
+            transfer transactions. Create payment body field: `payment_request.credit_transfer_transaction[*].regulatory_reporting.details.code`'
+          default: false
+          type: boolean
+        reference_number_supported:
+          title: Reference Number Supported
+          description: States if reference number can be provided for credit transfer
+            transactions
+          default: false
+          type: boolean
+        reference_number_schemas:
+          title: Reference Number Schemas
+          description: List of reference number schemas supported by a payment method
+          items:
+            $ref: '#/components/schemas/ReferenceNumberScheme'
+          type: array
+        requested_execution_date_supported:
+          title: Requested Execution Date Supported
+          description: States if requested execution date supported by a payment method
+          default: false
+          type: boolean
+        requested_execution_date_max_period:
+          title: Requested Execution Date Max Period
+          description: Maximum requested execution date interval in the future
+          type: integer
+        remittance_reference_supported:
+          title: Remittance Reference Supported
+          description: States if both reference number and remittance information
+            can be provided simultaneously
+          default: false
+          type: boolean
+        final_successful_statuses:
+          title: Final Successful Statuses
+          description: List of final successful statuses of the payment
+          items:
+            $ref: '#/components/schemas/PaymentStatus'
+          type: array
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type
+      type: object
+      required:
+      - payment_type
+      - psu_type
+      title: ResponsePaymentType
+      example:
+        allowed_auth_methods:
+        - string
+        charge_bearer_values:
+        - SLEV
+        creditor_account_schemas:
+        - IBAN
+        creditor_agent_bic_fi_required: false
+        creditor_agent_clearing_system_member_id_required: false
+        creditor_country_required: false
+        creditor_name_required: false
+        creditor_postal_address_required: false
+        currencies:
+        - EUR
+        debtor_account_required: false
+        debtor_account_schemas:
+        - IBAN
+        debtor_contact_email_required: false
+        debtor_contact_phone_required: false
+        debtor_currency_required: false
+        max_transactions: 1
+        payment_type: SEPA
+        priority_codes:
+        - NORM
+        psu_type: business
+        reference_number_schemas:
+        - FIRF
+        - INTL
+        reference_number_supported: true
+        regulatory_reporting_code_required: false
+        remittance_information_lines:
+        - max_length: 140
+          min_length: 1
+          pattern: ^.{1,140}$
+        remittance_information_required: false
+        requested_execution_date_max_period: 365
+        requested_execution_date_supported: true
+    SandboxInfo:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/SandboxUser'
+          type: array
+          title: Users
+          description: List of sandbox users which can be used to test sandbox environment
+      type: object
+      title: SandboxInfo
+    SandboxUser:
+      properties:
+        username:
+          title: Username
+          description: Username
+          examples:
+          - MyUsername
+          type: string
+        password:
+          title: Password
+          description: Password
+          examples:
+          - MySecretPassword
+          type: string
+        otp:
+          title: Otp
+          description: One time password
+          examples:
+          - '123456'
+          type: string
+      type: object
+      title: SandboxUser
+    SchemeName:
+      type: string
+      enum:
+      - CHID
+      - GS1G
+      - DUNS
+      - BANK
+      - TXID
+      - CUST
+      - EMPL
+      - OTHC
+      - DRLC
+      - CUSI
+      - SOSE
+      - ARNU
+      - CCPT
+      - OTHI
+      - COID
+      - SREN
+      - SRET
+      - NIDN
+      - OAUT
+      - CPAN
+      - BBAN
+      - IBAN
+      - MIBN
+      - BGNR
+      - PGNR
+      title: SchemeName
+      example: CHID
+      x-enum-descriptions:
+        ARNU: AlienRegistrationNumber
+        BANK: BankPartyIdentification. Unique and unambiguous assignment made by a
+          specific bank or similar financial institution to identify a relationship
+          as defined between the bank and its client.
+        BBAN: Basic Bank Account Number. Represents a country-specific bank account
+          number.
+        BGNR: Swedish BankGiro account number. Used in domestic swedish giro payments
+        CCPT: PassportNumber
+        CHID: Clearing Identification Number
+        COID: CountryIdentificationCode. Country authority given organisation identification
+          (e.g., corporate registration number)
+        CPAN: Card PAN (masked or plain)
+        CUSI: CustomerIdentificationNumberIndividual. Handelsbanken-specific code
+        CUST: CorporateCustomerNumber
+        DRLC: DriversLicenseNumber
+        DUNS: Data Universal Numbering System
+        EMPL: EmployerIdentificationNumber
+        GS1G: GS1GLNIdentifier
+        IBAN: International Bank Account Number (IBAN) - identification used internationally
+          by financial institutions to uniquely identify the account of a customer.
+        MIBN: Masked IBAN
+        NIDN: NationalIdentityNumber. Number assigned by an authority to identify
+          the national identity number of a person.
+        OAUT: OAUTH2 access token that is owned by the PISP being also an AISP and
+          that can be used in order to identify the PSU
+        OTHC: OtherCorporate. Handelsbanken-specific code
+        OTHI: OtherIndividual. Handelsbanken-specific code
+        PGNR: Swedish PlusGiro account number. Used in domestic swedish giro payments
+        SOSE: SocialSecurityNumber
+        SREN: The SIREN number is a 9 digit code assigned by INSEE, the French National
+          Institute for Statistics and Economic Studies, to identify an organisation
+          in France.
+        SRET: The SIRET number is a 14 digit code assigned by INSEE, the French National
+          Institute for Statistics and Economic Studies, to identify an organisation
+          unit in France. It consists of the SIREN number, followed by a five digit
+          classification number, to identify the local geographical unit of that entity.
+        TXID: TaxIdentificationNumber
+    Service:
+      type: string
+      enum:
+      - AIS
+      - PIS
+      title: Service
+      example: AIS
+      x-enum-descriptions:
+        AIS: Account Information Service
+        PIS: Payment Initiation Service
+    ServiceLevelCode:
+      type: string
+      enum:
+      - BKTR
+      - G001
+      - G002
+      - G003
+      - G004
+      - NUGP
+      - NURG
+      - PRPT
+      - SDVA
+      - SEPA
+      - SVDE
+      - URGP
+      - URNS
+      title: ServiceLevelCode
+      example: BKTR
+      x-enum-descriptions:
+        BKTR: 'Book Transaction: Payment through internal book transfer'
+        G001: 'Tracked Customer Credit Transfer: Tracked Customer Credit Transfer'
+        G002: 'Tracked Stop And Recall: Tracked Stop and Recall'
+        G003: 'Tracked Corporate Transfer: Tracked Corporate Transfer'
+        G004: 'Tracked Financial Institution Transfer: Tracked Financial Institution
+          Transfer'
+        NUGP: 'Non-urgent Priority Payment: Payment must be executed as a non-urgent
+          transaction with priority settlement'
+        NURG: 'Non-urgent Payment: Payment must be executed as a non-urgent transaction,
+          which is typically identified as an ACH or low value transaction'
+        PRPT: 'EBA Priority Service: Transaction must be processed according to the
+          EBA Priority Service'
+        SDVA: 'Same Day Value: Payment must be executed with same day value to the
+          creditor'
+        SEPA: 'Single Euro Payments Area: Payment must be executed following the Single
+          Euro Payments Area scheme'
+        SVDE: "Domestic Cheque Clearing and Settlement: Payment execution following\
+          \ the cheque agreement and traveller cheque agreement of the German Banking\
+          \ Industry Committee (Die Deutsche Kreditwirtschaft - DK) and Deutsche Bundesbank\
+          \ \u2013 Scheck Verrechnung Deutschland"
+        URGP: 'Urgent Payment: Payment must be executed as an urgent transaction cleared
+          through a real-time gross settlement system, which is typically identified
+          as a wire or high value transaction'
+        URNS: 'Urgent Payment Net Settlement: Payment must be executed as an urgent
+          transaction cleared through a real-time net settlement system, which is
+          typically identified as a wire or high value transaction'
+    SessionAccount:
+      properties:
+        uid:
+          type: string
+          format: uuid
+          title: Uid
+          description: Account identificator within the session
+        identification_hash:
+          type: string
+          title: Identification Hash
+          description: Global account identification hash
+        identification_hashes:
+          items:
+            type: string
+          type: array
+          title: Identification Hashes
+          description: List of possible account identification hashes. Identification
+            hash is based on the account number. Some accounts may have multiple account
+            numbers (e.g. IBAN and BBAN). This field contains all possible hashes.
+      type: object
+      required:
+      - uid
+      - identification_hash
+      - identification_hashes
+      title: SessionAccount
+    SessionStatus:
+      type: string
+      enum:
+      - INVALID
+      - PENDING_AUTHORIZATION
+      - RETURNED_FROM_BANK
+      - AUTHORIZED
+      - EXPIRED
+      - CLOSED
+      - REVOKED
+      - CANCELLED
+      title: SessionStatus
+      example: INVALID
+      x-enum-descriptions:
+        AUTHORIZED: AUTHORIZED
+        CANCELLED: CANCELLED
+        CLOSED: CLOSED
+        EXPIRED: EXPIRED
+        INVALID: INVALID
+        PENDING_AUTHORIZATION: PENDING_AUTHORIZATION
+        RETURNED_FROM_BANK: RETURNED_FROM_BANK
+        REVOKED: REVOKED
+    StartAuthorizationRequest:
+      properties:
+        access:
+          $ref: '#/components/schemas/Access'
+          description: Scope of access to be request from ASPSP and to be confirmed
+            by PSU
+          examples:
+          - valid_until: '2020-12-01T12:00:00.000000+00:00'
+        aspsp:
+          $ref: '#/components/schemas/ASPSP'
+          description: ASPSP that PSU is going to be authenticated to
+          examples:
+          - country: FI
+            name: Nordea
+        state:
+          type: string
+          title: State
+          description: Arbitrary string. Same string will be returned in query parameter
+            when redirecting to the URL passed via redirect_url parameter
+          examples:
+          - 3a57e2d3-2e0c-4336-af9b-7fa94f0606a3
+        redirect_url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Redirect Url
+          description: URL that PSU will be redirected to after authorization
+        psu_type:
+          $ref: '#/components/schemas/PSUType'
+          description: PSU type which consent is created for
+        auth_method:
+          title: Auth Method
+          description: Desired authorization method (in case ASPSP supports multiple).
+            Supported methods can be obtained from ASPSP auth_methods
+          examples:
+          - methodName
+          type: string
+        credentials:
+          title: Credentials
+          description: PSU credentials (User ID, company ID etc.) If not provided,
+            then those are going to be asked from a PSU during authorization
+          examples:
+          - userId: MyUsername
+          type: object
+        credentials_autosubmit:
+          type: boolean
+          title: Credentials Autosubmit
+          description: Controls whether user credentials will be autosubmitted (if
+            passed). If set to `false` then credentials form will be prefilled with
+            passed credentials
+          default: true
+        language:
+          title: Language
+          description: Preferred PSU language. Two-letter lowercase language code
+          examples:
+          - fi
+          type: string
+          pattern: ^[a-z]{2}$
+        psu_id:
+          title: Psu Id
+          description: Unique identification of a PSU used by the client application.
+            It can be used to match sessions of the same user. Although only hashed
+            value is stored, it is recommended to use anonymised identifiers (i.e.
+            digital ID instead of email or social security number). In case the parameter
+            is not passed by the application, random value will be used.
+          type: string
+      type: object
+      required:
+      - access
+      - aspsp
+      - state
+      - redirect_url
+      title: StartAuthorizationRequest
+    StartAuthorizationResponse:
+      properties:
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: URL to redirect PSU to
+          examples:
+          - https://tilisy.enablebanking.com/welcome?sessionid=73100c65-c54d-46a1-87d1-aa3effde435a
+        authorization_id:
+          type: string
+          format: uuid
+          title: Authorization Id
+          description: PSU authorisation ID, a value used to identify an authorisation
+            session. Please note that another session ID will used to fetch account
+            data.
+          examples:
+          - 73100c65-c54d-46a1-87d1-aa3effde435a
+        psu_id_hash:
+          type: string
+          title: Psu Id Hash
+          description: Hashed unique identification of a PSU used by the client application.
+            In case PSU ID is not passed by the client application, the hash is calculated
+            based on a random value. The hash also inherits the application ID, so
+            different hashes will be calculated when using the same PSU ID with different
+            applications.
+      type: object
+      required:
+      - url
+      - authorization_id
+      - psu_id_hash
+      title: StartAuthorizationResponse
+    StatusReasonInformation:
+      properties:
+        status_reason_code:
+          type: string
+          title: Status Reason Code
+          description: ISO20022 status reason code
+        status_reason_description:
+          type: string
+          title: Status Reason Description
+          description: Status reason description
+      type: object
+      required:
+      - status_reason_code
+      - status_reason_description
+      title: StatusReasonInformation
+    SuccessResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+          description: Returns "OK" in case of successfull request
+          default: OK
+      type: object
+      title: SuccessResponse
+    Transaction:
+      properties:
+        entry_reference:
+          title: Entry Reference
+          description: Unique transaction identifier provided by ASPSP. This identifier
+            is both unique and immutable for accounts with the same identification
+            hashes and can be used for matching transactions across multiple PSU authentication
+            sessions. Usually the same identifier is available for transactions in
+            ASPSP's online/mobile interface and is called archive ID or similarly.
+            Please note that this identifier is not globally unique and same entry
+            references are likely to occur for transactions belonging to different
+            accounts.
+          examples:
+          - '5561990681'
+          type: string
+        merchant_category_code:
+          title: Merchant Category Code
+          description: Category code conform to ISO 18245, related to the type of
+            services or goods the merchant provides for the transaction
+          examples:
+          - '5511'
+          type: string
+        transaction_amount:
+          $ref: '#/components/schemas/AmountType'
+          description: Monetary sum of the transaction
+        creditor:
+          description: Identification of the party receiving funds in the transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        creditor_account:
+          description: Identification of the account on which the transaction is credited
+          examples:
+          - iban: FI1737631867613465
+          $ref: '#/components/schemas/AccountIdentification'
+        creditor_agent:
+          description: Identification of the creditor agent
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        debtor:
+          description: Identification of the party sending funds in the transaction
+          $ref: '#/components/schemas/PartyIdentification'
+        debtor_account:
+          description: Identification of the account on which the transaction is debited
+          examples:
+          - iban: FI8638798819867751
+          $ref: '#/components/schemas/AccountIdentification'
+        debtor_agent:
+          description: Identification of the debtor agent
+          $ref: '#/components/schemas/FinancialInstitutionIdentification'
+        bank_transaction_code:
+          description: Allows the account servicer to correctly report a transaction,
+            which in its turn will help account holders to perform their cash management
+            and reconciliation operations.
+          $ref: '#/components/schemas/BankTransactionCode'
+        credit_debit_indicator:
+          $ref: '#/components/schemas/CreditDebitIndicator'
+          description: Accounting flow of the transaction
+          examples:
+          - CRDT
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+          description: Available transaction status values
+          examples:
+          - BOOK
+        booking_date:
+          title: Booking Date
+          description: Booking date of the transaction on the account, i.e. the date
+            at which the transaction has been recorded on books
+          examples:
+          - '2020-01-03'
+          type: string
+          format: date
+        value_date:
+          title: Value Date
+          description: Value date of the transaction on the account, i.e. the date
+            at which funds become available to the account holder (in case of a credit
+            transaction), or cease to be available to the account holder (in case
+            of a debit transaction)
+          examples:
+          - '2020-01-02'
+          type: string
+          format: date
+        transaction_date:
+          title: Transaction Date
+          description: 'Date used for specific purposes:
+
+            - for card transaction: date of the transaction
+
+            - for credit transfer: acquiring date of the transaction
+
+            - for direct debit: receiving date of the transaction'
+          examples:
+          - '2020-01-01'
+          type: string
+          format: date
+        balance_after_transaction:
+          description: Funds on the account after execution of the transaction
+          $ref: '#/components/schemas/AmountType'
+        reference_number:
+          title: Reference Number
+          description: Credit transfer reference number (also known as the creditor
+            reference or the structured creditor reference). The value is set when
+            it is known that the transaction data contains a reference number (in
+            either ISO 11649 or a local format).
+          examples:
+          - RF07850352502356628678117
+          type: string
+        remittance_information:
+          title: Remittance Information
+          description: Payment details. For credit transfers may contain free text,
+            reference number or both at the same time (in case Extended Remittance
+            Information is supported). When it is known that remittance information
+            contains a reference number (either based on ISO 11649 or a local scheme),
+            the reference number is also available via the `reference_number` field.
+          examples:
+          - - RF07850352502356628678117
+            - Gift for Alex
+          items:
+            type: string
+          type: array
+        debtor_account_additional_identification:
+          title: Debtor Account Additional Identification
+          description: All other debtor account identifiers provided by ASPSPs
+          examples:
+          - identification: '12345678'
+            scheme_name: CPAN
+          items:
+            $ref: '#/components/schemas/GenericIdentification'
+          type: array
+        creditor_account_additional_identification:
+          title: Creditor Account Additional Identification
+          description: All other creditor account identifiers provided by ASPSPs
+          examples:
+          - identification: '12345678'
+            scheme_name: BBAN
+          items:
+            $ref: '#/components/schemas/GenericIdentification'
+          type: array
+        exchange_rate:
+          description: Provides details on the currency exchange rate and contract.
+          $ref: '#/components/schemas/ExchangeRate'
+        note:
+          title: Note
+          description: The internal note made by PSU
+          type: string
+        transaction_id:
+          title: Transaction Id
+          description: Identification used for fetching transaction details.This value
+            can not be used to uniquely identify transactions and may change if the
+            list of transactions is retrieved again. Null if fetching transaction
+            details is not supported.
+          type: string
+      type: object
+      required:
+      - transaction_amount
+      - credit_debit_indicator
+      - status
+      title: Transaction
+    TransactionStatus:
+      type: string
+      enum:
+      - BOOK
+      - CNCL
+      - HOLD
+      - OTHR
+      - PDNG
+      - RJCT
+      - SCHD
+      title: TransactionStatus
+      example: BOOK
+      x-enum-descriptions:
+        BOOK: Accounted transaction (ISO20022 Closing Booked)
+        CNCL: Cancelled transaction
+        HOLD: Account hold
+        OTHR: Transaction with unknown status or not fitting the other options
+        PDNG: Instant Balance Transaction (ISO20022 Expected)
+        RJCT: Rejected transaction
+        SCHD: Scheduled transaction
+    TransactionsFetchStrategy:
+      type: string
+      enum:
+      - default
+      - longest
+      title: TransactionsFetchStrategy
+      example: default
+      x-enum-descriptions:
+        default: Fetches transactions as requested by the user by passing the `date_from`
+          and `date_to` parameters to an ASPSP. If not date_from or date_to is passed,
+          then meaningful defaults are used.
+        longest: Tries to find the longest possible period of transactions and fetches
+          transactions for that period. Passed date_from is also taken into account.
+          This strategy may use extra ASPSP calls. date_to is ignored in this strategy.
+    UnstructuredRemittanceInformation:
+      items:
+        type: string
+      type: array
+      title: UnstructuredRemittanceInformation
+      description: 'Payment details. For credit transfers may contain free text, reference
+        number or both at the same time (in case Extended Remittance Information is
+        supported). When it is known that remittance information contains a reference
+        number (either based on ISO 11649 or a local scheme), the reference number
+        is also available via the `referenceNumber` field of the `Transaction` data
+        structure.
+
+        '
+    Usage:
+      type: string
+      enum:
+      - PRIV
+      - ORGA
+      title: Usage
+      example: PRIV
+      x-enum-descriptions:
+        ORGA: professional account
+        PRIV: private personal account
+  securitySchemes:
+    jwtAuthentication:
+      authorizationUrl: ''
+      flow: implicit
+      type: oauth2
+      description: "In order to get access to this API you need to:\n\n- Generate\
+        \ a private RSA key and a self-signed certificate;\n- Upload the certificate\
+        \ to enablebanking.com and get application ID;\n- Construct JWT with the data\
+        \ described below and signed with your private key;\n- Send the JWT in the\
+        \ Authorization header.\n\n## Private key and certificate generation\n\n>\
+        \ Generating private RSA key\n\n```bash\nopenssl genrsa -out private.key 4096\n\
+        ```\n\nOpenSSL CLI can be used for generation of a private key and self-signed\
+        \ certificate.\n\nMake sure you keep the private key in secret (e.g. don't\
+        \ expose it to client, share\nwith anyone nor embed into mobile or other apps\
+        \ intalled to user devices).\n\n> Generating self-signed certificate\n\n```bash\n\
+        openssl req -new -x509 -days 365 -key private.key -out public.crt -subj \"\
+        /C=FI/ST=Uusima/L=Helsinki/O=ExampleOrganisation/CN=www.bigorg.com\"\n```\n\
+        \nYou should replace values under `-subj` with appropriate values.\n\nAlternatively\
+        \ you can use the private key generated in your browser\n[when registering\
+        \ a new application](#certificate-upload-and-application-registration).\n\
+        Just choose **Generate in the browser (using SubtleCrypto) and export private\
+        \ key** option\nwhen registering an application, and the private key will\
+        \ be exported after the application\nhas been registered (the corresponding\
+        \ certificate will be used for the app registration).\n\n## Certificate upload\
+        \ and application registration\n\nTo register a new application you need to\
+        \ have an account on the \n[Enable Banking Control Panel](https://enablebanking.com/cp).\
+        \ You can create one by visiting\n[https://enablebanking.com/sign-in/](https://enablebanking.com/sign-in/)\n\
+        and entering your email address (a one-time authentication link will be sent\
+        \ to your email address).\n\nIn [the app registration form](https://enablebanking.com/cp/applications)\
+        \ you will be asked to\nupload the public certificate that you created for\
+        \ the application being registered.\n\nAn application can be registered to\
+        \ either `PRODUCTION` (aka \"live\") or `SANDBOX` (aka \"simulation\")\nenvironment.\
+        \ Applications can not be transferred from the sandbox to the production environment\
+        \ and\nvice versa.\n\nApplications registered into the sandbox environment\
+        \ are activated automatically. Applications\nregistered to the production\
+        \ environment at first appear as pending and will be activated either \nafter\
+        \ contractual formalities for the use of the API are cleared or after you\
+        \ \n[whitelist your own accounts](../linked-accounts/index.md). For more information\
+        \ please contact us at\n[info@enablebanking.com](mailto:info@enablebanking.com).\n\
+        \n<h3 id=\"application-registration-api\">Application registration API</h3>\n\
+        \nYou can also register an application sending POST request containing JSON\
+        \ with the application\ndetails and public certificate to `https://enablebanking.com/api/applications`\
+        \ endpoint.\n\nThe JSON body for the endpoint is to include the following\
+        \ fields:\n\n- \"certificate\": Content of the certificate or public key of\
+        \ the application (always required)\n- \"environment\": Environment (`SANDBOX`\
+        \ or `PRODUCTION`) in which the application will operate (always required)\n\
+        - \"name\": Name of the application being registered (always required)\n-\
+        \ \"redirect_urls\": List of allowed redirect URLs for the application (always\
+        \ required)\n- \"description\": Description of the application being registered\
+        \ (required when the `environment` field is set to `PRODUCTION`)\n- \"gdpr_email\"\
+        : Email address for data protection matters (required when the `environment`\
+        \ field is set to `PRODUCTION`)\n- \"privacy_url\": URL of the application's\
+        \ privacy policy (required when the `environment` field is set to `PRODUCTION`)\n\
+        - \"terms_url\": URL of the application's terms of service (required when\
+        \ the `environment` field is set to `PRODUCTION`)\n\n> App registration example\
+        \ using curl\n\n```bash\ncurl -X POST -H \"Authorization: Bearer YOUR-JWT-ON-ENABLEBANKING-COM\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -d \"{\\\"name\\\":\\\"\
+        My app\\\",\\\"certificate\\\":\\\"$(cat public.crt | tr '\\n' '|' | sed 's/|/\\\
+        \\n/g')\\\",\\\"environment\\\":\\\"SANDBOX\\\",\\\"redirect_urls\\\":[\\\"\
+        https://example.org/\\\"]}\" \\\n  https://enablebanking.com/api/applications\n\
+        ```\n\nIn response to the app registration request, you will receive an ID\
+        \ assigned to your application, which\nis to be used when [forming JTW token](#jwt-format-and-signature).\n\
+        \n> Example response\n\n```json\n{\n  \"app_id\": \"cf589be3-3755-465b-a8df-a90a16a31403\"\
+        \n}\n```\n\n## JWT format and signature\n\n> JWT example\n\n```bash\neyJ0eXAiOiAiSldUIiwgImFsZyI6ICJSUzI1NiIsICJraWQiOiAiY2Y1ODliZTMtMzc1NS00NjViLWE4ZGYtYTkwYTE2YTMxNDAzIn0.eyJpc3MiOiAiZW5hYmxlYmFua2luZy5jb20iLCAiYXVkIjogImFwaS50aWxpc3kuY29tIiwgImlhdCI6IDE2MDE0NTY3NjgsICJleHAiOiAxNjAxNTQzMTY4fQ.daO3ENSYIA3ud7Ay7uGQ0xxqq9r4_WLcM5SbrN_6_fqsFZXFdoGQA5nKiyP8Ot4nWdYcZvaNWxEAOIodUFndOP8pjihF9-rMXuNGEjde1cq2WjYzKwiIeodUej8okDWdB--szcgurzGMd8RRMjqr951PWqnXS-PbrRsavDHp8l2q4YBjh2m80nRruKnQCAn0dtm4A5G9rZaEowo9z-c8HJU101jKddyOpHhl9UvxVrERzHtyO4LdidiP4rP1hmaVMWybSbcIMI_h30qjqWP21kYRH9ENITTttbf0uZIa8s74jKYxNIdiiDyRaq9WjoPolrHI_ZxcMjp8mmCKX-N-1w\n\
+        ```\n\nYou can read more about JWT here: https://jwt.io/introduction/\n\n\
+        JWT header must contain following fields:\n\n- \"typ\": \"JWT\" (always the\
+        \ same)\n- \"alg\": \"RS256\" (always the same, only RS256 is supported)\n\
+        - \"kid\": \"<application_id>\" (application id obtained after certificate\
+        \ upload)\n\nJWT body must contain following fields:\n\n- \"iss\": \"enablebanking.com\"\
+        \ (always the same)\n- \"aud\": \"api.enablebanking.com\" (always the same,\
+        \ formerly had to be \"api.tilisy.com\", which is now depricated)\n- \"iat\"\
+        : 1601456603 (timestamp when the token is being created)\n- \"exp\": 1601460262\
+        \ (timestamp when the token expires)\n\nMaximum allowed time-to-live for token\
+        \ is 86400 seconds (24 hours). Tokens created with longer\nTTL are not accepted\
+        \ by the API.\n\n> Check code samples in C#, Node.js, PHP, Python and Ruby\
+        \ in [our Github repository](https://github.com/enablebanking/enablebanking-api-samples)\n\
+        \n```\nhttps://github.com/enablebanking/enablebanking-api-samples\n```\n\n\
+        ## Send request with JWT provided\n\n> Example request\n\n```http\nGET https://api.enablebanking.com/application\
+        \ HTTP/1.1\nHost: api.enablebanking.com\nAuthorization: Bearer eyJ0eXAiOiAiSldUIiwgImFsZyI6ICJSUzI1NiIsICJraWQiOiAiY2Y1ODliZTMtMzc1NS00NjViLWE4ZGYtYTkwYTE2YTMxNDAzIn0.eyJpc3MiOiAiZW5hYmxlYmFua2luZy5jb20iLCAiYXVkIjogImFwaS5lbmFibGViYW5raW5nLmNvbSIsICJpYXQiOiAxNjAxNDU2NzY4LCAiZXhwIjogMTYwMTU0MzE2OH0.daO3ENSYIA3ud7Ay7uGQ0xxqq9r4_WLcM5SbrN_6_fqsFZXFdoGQA5nKiyP8Ot4nWdYcZvaNWxEAOIodUFndOP8pjihF9-rMXuNGEjde1cq2WjYzKwiIeodUej8okDWdB--szcgurzGMd8RRMjqr951PWqnXS-PbrRsavDHp8l2q4YBjh2m80nRruKnQCAn0dtm4A5G9rZaEowo9z-c8HJU101jKddyOpHhl9UvxVrERzHtyO4LdidiP4rP1hmaVMWybSbcIMI_h30qjqWP21kYRH9ENITTttbf0uZIa8s74jKYxNIdiiDyRaq9WjoPolrHI_ZxcMjp8mmCKX-N-1w\n\
+        ```\n\nIn order to authenticate your application, you need to provide JWT\
+        \ in the \"Authorization\" header\nof your request.\n"
+schemes:
+- https
+security:
+- jwtAuthentication: []
+servers:
+- url: https://api.enablebanking.com
+- url: https://api.tilisy.com
+  description: (deprecated)

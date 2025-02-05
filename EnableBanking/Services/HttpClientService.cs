@@ -39,7 +39,7 @@ namespace EnableBanking.Services
             var response = new ApiResponse<T>();
 
             var content = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
-            response.StatusCode = response.StatusCode;
+            response.StatusCode = responseMessage.StatusCode;
 
             if (responseMessage.IsSuccessStatusCode)
             {
