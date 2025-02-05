@@ -30,6 +30,9 @@ jobs:
       
       - name: Copy README.md to project folder
         run: cp README.md EnableBanking/
+      
+      - name: Copy LICENSE.txt to project folder
+        run: cp LICENSE.txt EnableBanking/
 
       - name: Pack NuGet package
         run: dotnet pack --configuration Release --no-build --output nupkgs /p:Version=${{ env.VERSION }}
