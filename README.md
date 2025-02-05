@@ -14,7 +14,7 @@ For full details of the EnableBanking API, see the [Docs](https://enablebanking.
 
 To install `EnableBanking`, run the following command in the [Package Manager Console](https://docs.microsoft.com/en-us/nuget/tools/package-manager-console)
 
-`Install-Package EnableBanking -Version 1.0.0`
+`Install-Package EnableBanking -Version 1.0.2`
 
 
 ## Usage
