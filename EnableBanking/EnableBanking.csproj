@@ -13,16 +13,21 @@
 	  <Authors>Ioannis Zapantis</Authors>
 	  <Description>A simple .NET nuget package to consume EnableBanking's API</Description>
 	  <PackageTags>dotnet nuget payments enablebanking rest api</PackageTags>
-	  <PackageLicenseUrl>https://github.com/tech-gian/EnableBanking/blob/master/LICENSE.txt</PackageLicenseUrl>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	  <RepositoryUrl>https://github.com/tech-gian/EnableBanking</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <LicenseUrl>https://opensource.org/licenses/MIT</LicenseUrl>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <IncludeSymbols>true</IncludeSymbols>
 	  <IncludeSource>true</IncludeSource>
 	  <!-- End of NuGet Package Metadata -->
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
+		<None Include="..\README.md" Pack="true" PackagePath="README.md" />
+	</ItemGroup>
 
   <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
