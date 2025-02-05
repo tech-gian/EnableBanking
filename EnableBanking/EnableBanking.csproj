@@ -1,16 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+      <TargetFramework>net8.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+
+	  <OutputType>Library</OutputType>
+	  
+	  <!-- NuGet Package Metadata -->
+	  <PackageId>EnableBanking</PackageId>
+	  <Version>1.0.0</Version> <!-- This will be dynamically set in the workflow -->
+	  <Authors>Ioannis Zapantis</Authors>
+	  <Description>A simple .NET nuget package to consume EnableBanking's API</Description>
+	  <PackageTags>dotnet nuget payments enablebanking rest api</PackageTags>
+	  <PackageLicenseUrl>https://github.com/tech-gian/EnableBanking/blob/master/LICENSE.txt</PackageLicenseUrl>
+	  <RepositoryUrl>https://github.com/tech-gian/EnableBanking</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <LicenseUrl>https://opensource.org/licenses/MIT</LicenseUrl>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	  <IncludeSymbols>true</IncludeSymbols>
+	  <IncludeSource>true</IncludeSource>
+	  <!-- End of NuGet Package Metadata -->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
   </ItemGroup>
 
 </Project>

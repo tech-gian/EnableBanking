@@ -1,0 +1,38 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers when a new tag like v1.0.0 is pushed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Extract version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release --no-build --output nupkgs /p:Version=${{ env.VERSION }}
+
+      - name: Publish to NuGet
+        run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v6.1.0
