@@ -13,10 +13,11 @@
 	  <Authors>Ioannis Zapantis</Authors>
 	  <Description>A simple .NET nuget package to consume EnableBanking's API</Description>
 	  <PackageTags>dotnet nuget payments enablebanking rest api</PackageTags>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	  <RepositoryUrl>https://github.com/tech-gian/EnableBanking</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <LicenseUrl>https://opensource.org/licenses/MIT</LicenseUrl>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <IncludeSymbols>true</IncludeSymbols>
 	  <IncludeSource>true</IncludeSource>

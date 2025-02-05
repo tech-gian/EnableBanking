@@ -27,12 +27,12 @@ jobs:
       - name: Extract version from tag
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      
+      - name: Copy README.md to project folder
+        run: cp README.md EnableBanking/
 
       - name: Pack NuGet package
         run: dotnet pack --configuration Release --no-build --output nupkgs /p:Version=${{ env.VERSION }}
 
       - name: Publish to NuGet
         run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-      
-      - name: Release Drafter
-        uses: release-drafter/release-drafter@v6.1.0
