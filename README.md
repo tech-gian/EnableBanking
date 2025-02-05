@@ -2,8 +2,8 @@
 
 For full details of the EnableBanking API, see the [Docs](https://enablebanking.com/docs/).
 
-[![NuGet](https://img.shields.io/nuget/v/GoCardless.svg)](https://www.nuget.org/packages/GoCardless/)
-[![<GoCardless>](https://github.com/gocardless/gocardless-dotnet/actions/workflows/build_and_publish.yml/badge.svg)](https://github.com/gocardless/gocardless-dotnet/actions)
+[![NuGet](https://img.shields.io/nuget/v/EnableBanking.svg)](https://www.nuget.org/packages/EnableBanking/)
+[![<EnableBanking>](github.com/tech-gian/EnableBanking/actions/workflows/publish.yml/badge.svg)](https://github.com/tech-gian/EnableBanking/actions)
 
 - [Quick Start](https://enablebanking.com/docs/api/quick-start/)
 - [API Reference](https://enablebanking.com/docs/api/reference/)
